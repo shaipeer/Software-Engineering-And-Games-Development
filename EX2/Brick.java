@@ -16,34 +16,33 @@ public class Brick
 {
 	//===================================================================================
 	//						Initial And Constant Values
-	//===================================================================================
-	private static final int MULTIPLE_FACTOR = 2;
-	private static final int EMPTY = -1;
-	
+	//===================================================================================	
+	private final int MULTIPLE_FACTOR = 2;
+	private final int EMPTY = -1;
 	private int _value;
-	private int _locX, _locY;
+
+	public static final Boolean EMPTY_BRICK = true;
+	public static final Boolean NEW_BRICK = false;
 	
 	
 	//===================================================================================
 	//								Constructors
 	//===================================================================================
-	public Brick(int locX, int locY, boolean emptyBrick)
+	public Brick(boolean emptyBrick)
 	{
-		_locX = locX;
-		_locY = locY;
-		
-		if(emptyBrick)	_value = EMPTY;
-		else			_value = MULTIPLE_FACTOR;
+		if(emptyBrick)	
+			_value = EMPTY;
+		else
+			_value = MULTIPLE_FACTOR;
 	}
 	
-	public Brick(int initialValue, int locX, int locY)
+	public Brick(int initialValue)
 	{
-		_locX = locX;
-		_locY = locY;
 		_value = initialValue;
 	}
 
 	
+	/*
 	//===================================================================================
 	//								Merge Bricks
 	//===================================================================================
@@ -51,8 +50,6 @@ public class Brick
 	{
 		if(_value == brickToMerge.getValue())
 		{
-			_locX 	= brickToMerge.getX();
-			_locY 	= brickToMerge.getY();
 			_value 	*= MULTIPLE_FACTOR;
 			
 			return true;
@@ -60,6 +57,7 @@ public class Brick
 		
 		return false;
 	}
+	*/
 	
 	//===================================================================================
 	//								Is Empty
@@ -74,9 +72,7 @@ public class Brick
 	//								Getters And Setters
 	//===================================================================================
 
-	public int getX()		{	return _locX;	}
-	public int getY()		{	return _locY;	}
-	public int getValue()	{	return _value;	}
-	
+	public int  getValue()			{	return _value;	}
+	public void setValue(int val)	{	_value = val;	}
 	
 }
