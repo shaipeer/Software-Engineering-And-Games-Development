@@ -16,16 +16,19 @@ import javax.swing.JFrame;
 public class MainFrame 
 {
 	public static int SCREEN_SIZE_W  = 600;
-	public static int SCREEN_SIZE_H  = 760;
+	public static int SCREEN_SIZE_H  = 600;
 	
 	public static void main(String[] args) 
 	{
 		JFrame frame = new JFrame("2048");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(SCREEN_SIZE_W, SCREEN_SIZE_H);
-      
+        
+        GameBoard gb = new GameBoard();
+        gb.setFocusable(true);
+        gb.requestFocusInWindow();
         //=======  Add Panels  =================
-        frame.add(new GameBoard());
+        frame.add(gb);
         frame.setVisible(true);
 
 	}
