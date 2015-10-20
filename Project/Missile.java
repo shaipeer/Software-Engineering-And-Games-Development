@@ -36,9 +36,8 @@ public class Missile extends Sprite
 	{
 		super(x, y, w, h, GameEngine.toBufferedImage(missileImage, M_WIDTH, M_HEIGHT));
 		
-		this.angle = angle;
-        dx = getSpeedX(M_SPEED);
-        dy = getSpeedY(M_SPEED);
+       // dx = getSpeedX(M_SPEED);
+       // dy = getSpeedY(M_SPEED);
         lives = LIVES;
 		distanceCounter = 0;
 	}
@@ -53,8 +52,8 @@ public class Missile extends Sprite
 		if(lives <= 0 || distanceCounter >= M_MAX_DISTANCE)
 			destroy = true;
 		
-		dx = getSpeedX(M_SPEED);
-        dy = getSpeedY(M_SPEED);
+		//dx = getSpeedX(M_SPEED);
+        //dy = getSpeedY(M_SPEED);
         
 		locX += dx;
 		locY += dy;
@@ -62,7 +61,6 @@ public class Missile extends Sprite
 		
 		distanceCounter += M_SPEED;
 		
-		correctLocation();
 	}
 	
 	

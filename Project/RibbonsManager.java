@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,9 +26,9 @@ public class RibbonsManager {
         
         BufferedImage skyImg = null, skylineImg = null, lampsImg = null;
         try {
-            skyImg = ImageIO.read(new File(getClass().getResource("/Sky.png").toURI()));
-            skylineImg = ImageIO.read(new File(getClass().getResource("/Skyline.gif").toURI()));
-            lampsImg = ImageIO.read(new File(getClass().getResource("/Lamps.png").toURI()));
+            skyImg = ImageIO.read(new File(getClass().getResource("/sky.png").toURI()));
+            skylineImg = ImageIO.read(new File(getClass().getResource("/skyline.png").toURI()));
+            lampsImg = ImageIO.read(new File(getClass().getResource("/ground.png").toURI()));
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -35,8 +36,8 @@ public class RibbonsManager {
         ribbons[1] = new Ribbon(pWidth, pHeight, skylineImg, 3);
         ribbons[2] = new Ribbon(pWidth, pHeight, lampsImg, 5);
         
-        for(Ribbon r : ribbons)
-        	r.moveLeft();
+      //  for(Ribbon r : ribbons)
+      //  	r.moveLeft();
     }
 	
     public void display(Graphics g)
@@ -49,16 +50,5 @@ public class RibbonsManager {
     {
             for(Ribbon r : ribbons)
                 r.update();
-    }
-
-    public void moveRight()
-    {
-            for(Ribbon r : ribbons)
-                r.moveRight();
-    }
-    public void moveLeft()
-    {
-            for(Ribbon r : ribbons)
-                r.moveLeft();
     }
 }

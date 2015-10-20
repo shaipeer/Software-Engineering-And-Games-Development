@@ -15,7 +15,6 @@ public class Ribbon {
     private BufferedImage img;
     private int imgWidth, pWidth, pHeight, xImgHead;
     private int moveInterval;
-    private boolean isMovingRight, isMovingLeft;
     
     public Ribbon(int w, int h, BufferedImage img, int moveInterval)
     {
@@ -24,33 +23,12 @@ public class Ribbon {
         pHeight = h;
         this.moveInterval = moveInterval;
         imgWidth = img.getWidth();
-        isMovingLeft = isMovingRight = false;
         xImgHead = 0;
-    }
-    
-    public void moveRight()
-    {
-        isMovingRight = true;
-        isMovingLeft = false;
-    }
-    
-    public void moveLeft()
-    {
-        isMovingLeft = true;
-        isMovingRight = false;
-    }
-    
-    public void stayStill()
-    {
-        isMovingLeft = isMovingRight = false;
     }
     
     public void update()
     {
-        if(isMovingRight)
-            xImgHead = (xImgHead + moveInterval) % imgWidth;
-        else if(isMovingLeft)
-            xImgHead = (xImgHead - moveInterval) % imgWidth;
+    	xImgHead = (xImgHead - moveInterval) % imgWidth;
     }
     
     public void display(Graphics g)

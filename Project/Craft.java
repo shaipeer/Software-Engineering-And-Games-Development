@@ -76,13 +76,8 @@ public class Craft extends Sprite
 			velocity -= FRICTION * velocity;
 			delay = 0;
 		
-			dx = getSpeedX(velocity);
-			dy = getSpeedY(velocity);
-			
-			locX += dx;
-			locY += dy;
-		
-			correctLocation();
+			//locX += dx;
+			//locY += dy;
 		}
 		moveMissiles();
 	}
@@ -101,9 +96,7 @@ public class Craft extends Sprite
 				if(missile.isDestroy())
 					iter.remove();
 			}
-		}
-		catch(Exception e)
-		{}
+		}catch(Exception e){}
 	}
 	
 	
@@ -113,7 +106,7 @@ public class Craft extends Sprite
     @Override
 	public void draw(Graphics g)
     {
-    	drawAngledImage(g, bufImage, angle, locX, locY);
+    	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
     	
     	drawMissiles(g);
     }
@@ -130,14 +123,13 @@ public class Craft extends Sprite
 	//								Collisions
     //===================================================================================
     
-    public boolean hit(Asteroid asteroid)
+/*    public boolean hit(Missile Mi)
     {
     	if(getBoundingBox().intersects(asteroid.getBoundingBox()))
     	{
     		lives--;
     		locX = pWidth/2;
     		locY = pHeight/2;
-    		angle = 0;
     		return true;
     	}
     	return false;	
@@ -157,7 +149,7 @@ public class Craft extends Sprite
     }
     
     
-    
+*/    
 	//===================================================================================
 	//								Movement
 	//===================================================================================
@@ -167,28 +159,31 @@ public class Craft extends Sprite
 		if (velocity <= TOP_SPEED)
 			velocity += ACCELERATION_SPEED;
 	}
-	
-	public void rotateLeft()
+	public void moveUp()
 	{
-		if(angle <= 0)
-			angle = 360-ROTATION_SPEED + angle;
-		else
-			angle -= ROTATION_SPEED;
+		locY -= dy;
 	}
 	
-	public void rotateRight()
+	public void moveDown()
 	{
-		if(angle >= 360-ROTATION_SPEED)
-			angle = 0+ROTATION_SPEED + (angle - 360);
-		else
-			angle += ROTATION_SPEED;
+		locY += dy;
+	}
+	public void moveLeft()
+	{
+		locX -= dx;
+	}
+	public void moveRight()
+	{
+		locX += dx;
 	}
 	
-	public void fire()
+	
+	/*	public void fire()
 	{
 		if( (missileList.size() < MAX_MISSILES) || (MAX_MISSILES == 0) )
-			missileList.add( new Missile(locX, locY, pWidth, pHeight, angle) );
+			missileList.add( new Missile(locX, locY, pWidth, pHeight) );
 	}
+	 */
 	
 	
 	//===================================================================================
@@ -203,6 +198,6 @@ public class Craft extends Sprite
 	//===================================================================================
 	public String toString()
 	{
-		return "Craft Angle: " + angle + "   Craft Velocity: " + Math.round(velocity) + "   Missiles: " + missileList.size();
+		return "";//"Craft Angle: " + angle + "   Craft Velocity: " + Math.round(velocity) + "   Missiles: " + missileList.size();
 	}
 }

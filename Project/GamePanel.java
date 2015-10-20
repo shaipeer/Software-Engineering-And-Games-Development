@@ -5,11 +5,14 @@ import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.JPanel;
+
+import org.w3c.dom.css.RGBColor;
 
 /**
 	|===========================================================|
@@ -32,8 +35,8 @@ public class GamePanel extends JPanel implements Runnable
 	//===================================================================================	
 	
 	//========= Game Constants ===========
-	public final static  int SCREEN_WIDTH   = 700; 
-	public final static  int SCREEN_HEIGHT  = 700; 
+	public final static  int SCREEN_WIDTH   = 1000; 
+	public final static  int SCREEN_HEIGHT  = 510; 
 	private static final int PERIOD 		= 60;
 	private final int INITIAL_ASTEROIDS     = 4;
 	private final int ASTEROIDS_AT_SPLIT    = 2;
@@ -44,15 +47,18 @@ public class GamePanel extends JPanel implements Runnable
 	
 	//========= Game Objects ===========
 	private Craft craft;
-	private ArrayList<Asteroid> asteroidList;
+	//private ArrayList<Asteroid> asteroidList;
 	
 	//========= Game Status =============
 	private Boolean running;
 	private boolean isGameOver, isWin;
 	
-	private boolean up, left, right;
+	private boolean up, down, left, right;
 	
 	
+	
+	private Ribbon skyRibbon, skyLineRibbon;
+	private RibbonsManager rManager;
 	//===================================================================================
 	//								Constructor
 	//===================================================================================
@@ -67,6 +73,10 @@ public class GamePanel extends JPanel implements Runnable
 		up = left = right = false;
 		
 		
+		try {
+			rManager = new RibbonsManager(SCREEN_WIDTH, SCREEN_HEIGHT);
+		} catch (URISyntaxException e) {}
+		
 		initialParameters();
 		
 	}
@@ -75,10 +85,10 @@ public class GamePanel extends JPanel implements Runnable
 	private void initialParameters()
 	{
 		//========== Generate Asteroids ===========
-		asteroidList = new ArrayList<Asteroid>();
+/*		asteroidList = new ArrayList<Asteroid>();
 		for(int i = 0 ; i < INITIAL_ASTEROIDS ; i++)
 			asteroidList.add(new Asteroid(getRandomLocationX(), getRandomLocationY(), SCREEN_WIDTH, SCREEN_HEIGHT));
-		
+	*/	
 		//========== Game Status ===========
 		running    	= true;
 		isWin 		= false;
@@ -151,25 +161,27 @@ public class GamePanel extends JPanel implements Runnable
 	//-----------------------------------------------------------------------------------
 	public void gameUpdate()
     {
-		checkCollisions();
+		//checkCollisions();
 		
-		if(up)		craft.accelerat();		
-		if(left)	craft.rotateLeft();
-		if(right) 	craft.rotateRight();
+		if(up)		craft.moveUp();
+		if(down)	craft.moveDown();
+		if(left)	craft.moveLeft();
+		if(right) 	craft.moveRight();
 		
 		craft.move();
-		moveAstroids();
+		
+		rManager.update();
     }
 	
 	private void checkCollisions()
 	{
-		checkCraftCollision();
+		//checkCraftCollision();
 		
-		checkMissilesCollision();
+		//checkMissilesCollision();
 	}
 	
 	
-	private void checkCraftCollision()
+/*	private void checkCraftCollision()
 	{
 		for(int i = 0 ; i < asteroidList.size() ; i++)
 			if(craft.hit(asteroidList.get(i)))
@@ -182,7 +194,7 @@ public class GamePanel extends JPanel implements Runnable
 			}
 		
 	}
-	
+	*/
 	
 	private void checkMissilesCollision()
 	{
@@ -206,14 +218,14 @@ public class GamePanel extends JPanel implements Runnable
 		catch (Exception e)
 		{}
 		*/
-		
+/*		
 		for(int i = 0 ; i < asteroidList.size() ; i++)
 			if(craft.missileHit(asteroidList.get(i)))//////////////////////////////////////////NULL POINTER EXEPTION
 			{
 				splitAsteroid(i);
 				i--;
 			}
-		
+	*/	
 		
 		/*
 		try
@@ -236,32 +248,13 @@ public class GamePanel extends JPanel implements Runnable
 		*/
 		
 		
-		if(asteroidList.size() == 0)
+/*		if(asteroidList.size() == 0)
 			youWin();
+			*/
 	}
 	
-	private void splitAsteroid(int index)
-	{
-		
-		for(int j = 0 ; j < ASTEROIDS_AT_SPLIT ; j++)
-			asteroidList.add(new Asteroid(asteroidList.get(index)));
-		asteroidList.remove(index);
-		
-	}
-	
-	private void moveAstroids()
-	{
-		Asteroid asteroid;
-		Iterator<Asteroid> iter = asteroidList.iterator();
-		while(iter.hasNext())
-		{
-			asteroid = iter.next();
-			asteroid.move();
-			if (asteroid.isDestroy())
-				iter.remove();
-			
-		}
-	}
+
+
 	//-----------------------------------------------------------------------------------
 	//								Game Render
 	//-----------------------------------------------------------------------------------
@@ -271,24 +264,16 @@ public class GamePanel extends JPanel implements Runnable
         
         dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.OPAQUE);
         dbg = dbImage.createGraphics();
-        
+        // dbg.setColor();
+        //dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         //========= Draw background ==========
-        dbg.drawImage(bgImage, 0, 0, this);		
+        rManager.display(dbg);
         
         //======= Draw game elements =========
         craft.draw(dbg);
               
-        try
-        {
-	        for (Asteroid asteroid : asteroidList)
-	     	   asteroid.draw(dbg);
-        }
-        catch(Exception e)
-        {
-        	
-        }
         
-        
+  /*      
         ////////////////////////////////////////////////////////////////
         dbg.setFont(new Font("Arial", Font.PLAIN, 30));
         dbg.setColor(Color.WHITE);
@@ -301,7 +286,7 @@ public class GamePanel extends JPanel implements Runnable
        // dbg.drawString(craft.toString(), 30, 90);
         
         //////////////////////////////////////////////////////////
-        
+  */      
         //====== Check if game is over =======
         if(isGameOver)
         {
@@ -356,6 +341,7 @@ public class GamePanel extends JPanel implements Runnable
 		    switch( keyCode ) 
 		    { 
 		        case KeyEvent.VK_UP:	 	up    = true;	break;
+		        case KeyEvent.VK_DOWN:	 	down  = true;	break;
 		        case KeyEvent.VK_LEFT:	 	left  = true;	break;
 		        case KeyEvent.VK_RIGHT : 	right = true;	break;
 		        default: 				 					return;
@@ -371,9 +357,10 @@ public class GamePanel extends JPanel implements Runnable
 		    switch( keyCode ) 
 		    { 
 			    case KeyEvent.VK_UP:	 	up    = false;		break;
+			    case KeyEvent.VK_DOWN:	 	down  = false;		break;
 		        case KeyEvent.VK_LEFT:	 	left  = false;		break;
 		        case KeyEvent.VK_RIGHT : 	right = false;		break;
-		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
+//		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
 		        default: 				 						return;
 		    }		 
 		}

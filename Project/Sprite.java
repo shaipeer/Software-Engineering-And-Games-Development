@@ -26,7 +26,6 @@ public class Sprite
     
     protected int locX, locY, dx, dy;		// Sprite location
     protected int pWidth, pHeight;  		// Panel's dimensions
-    protected int angle;					// Sprite angle
     protected int lives;					// Sprite number of lives
     protected boolean destroy;				// is Sprite destroyed or not
     protected boolean atUpperWall, atButtonWall, atLeftWall, atRightWall;
@@ -39,9 +38,8 @@ public class Sprite
     {
         locX = x;
         locY = y;
-        angle = 0;
-        dx = 0;
-		dy = 0;
+        dx = 5;
+		dy = 5;
 		destroy = false;
         pWidth = w;
         pHeight = h;
@@ -55,8 +53,6 @@ public class Sprite
     
     }
    
-    
-    
 	//===================================================================================
 	//								Get Bounding Box
 	//===================================================================================
@@ -64,9 +60,7 @@ public class Sprite
     {
         return new Rectangle(getLocX(), getLocY(), imageWidth, imageHeight);
     }
-
-    
-    
+ 
     //===================================================================================
 	//								Getters
     //===================================================================================
@@ -78,11 +72,8 @@ public class Sprite
     public int getPHeight()					{	return pHeight;		}
     public int getImageWidth()				{	return imageWidth;	}
     public int getImageHeight()				{	return imageHeight;	}
-    public int getAngle()					{	return angle;		}
     public int getLives()					{	return lives;		}
     public boolean isDestroy()				{	return destroy;		}
-    protected int getSpeedX(double speed)	{	return (int)(speed * Math.cos(Math.toRadians(angle)));	}
-    protected int getSpeedY(double speed)	{	return (int)(speed * Math.sin(Math.toRadians(angle)));	}
     
     
     
@@ -101,36 +92,9 @@ public class Sprite
 	//===================================================================================
     public void draw(Graphics g)
     {
-    	drawAngledImage(g, bufImage, angle, locX, locY);
+    	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
     }
-    
-    
-	//===================================================================================
-	//								Draw Angled Image
-	//===================================================================================    
-    public static void drawAngledImage(Graphics g, BufferedImage img, int angle, int x, int y)
-	{
-		AffineTransform at = new AffineTransform();
-		
-		Graphics2D g2d = (Graphics2D) g;
-		
-		int cx = img.getWidth()  / 2;
-        int cy = img.getHeight() / 2;
- 
-        at.translate(cx + x, cy + y);
-        at.rotate(Math.toRadians(angle));
-        at.translate(-cx, -cy);
-        g2d.drawImage(img, at, null);
-	}
-    
-   
-    protected void correctLocation()
-    {
-    	if		(locX >= pWidth )	locX = 0;
-    	else if (locX <= 0      )	locX = pWidth;
-    	else if (locY >= pHeight)	locY = 0;
-    	else if (locY <= 0      )	locY = pHeight;
-    }
+
     
 }
 
