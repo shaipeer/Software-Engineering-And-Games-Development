@@ -262,7 +262,7 @@ public class GamePanel extends JPanel implements Runnable
     {
         Graphics dbg;
         
-        dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.OPAQUE);
+        dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
         dbg = dbImage.createGraphics();
         // dbg.setColor();
         //dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
