@@ -12,22 +12,22 @@ public class RibbonsManager {
     private Ribbon[] ribbons;
     private int pWidth, pHeight;
 
-    public RibbonsManager(int w, int h)
+    public RibbonsManager(int w, int h) throws URISyntaxException
     {
         ribbons = new Ribbon[3];
 		
 	pWidth = w;
 	pHeight = h;
 		
-        File pathSky = new File(new File(".").getAbsolutePath()+ "//Sky.png");
-        File pathSkyLine = new File(new File(".").getAbsolutePath()+ "//Skyline.gif");
-        File pathLamps = new File(new File(".").getAbsolutePath()+ "//Lamps.png");
+//        File pathSky = new File(new File(".").getAbsolutePath()+ "//Sky.png");
+//        File pathSkyLine = new File(new File(".").getAbsolutePath()+ "//Skyline.gif");
+//        File pathLamps = new File(new File(".").getAbsolutePath()+ "//Lamps.png");
         
         BufferedImage skyImg = null, skylineImg = null, lampsImg = null;
         try {
-            skyImg = ImageIO.read(pathSky);
-            skylineImg = ImageIO.read(pathSkyLine);
-            lampsImg = ImageIO.read(pathLamps);
+            skyImg = ImageIO.read(new File(getClass().getResource("/Sky.png").toURI()));
+            skylineImg = ImageIO.read(new File(getClass().getResource("/Skyline.gif").toURI()));
+            lampsImg = ImageIO.read(new File(getClass().getResource("/Lamps.png").toURI()));
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
