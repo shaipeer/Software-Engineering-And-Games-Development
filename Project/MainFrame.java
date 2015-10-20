@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 	|   	File name   :	 MainFrame.java						|
 	|		Date		:	 28/08/2015    	      				|
 	|		Author    	:	 Shai Pe'er 	(032571580)			|
-	|		Mail   		:	 shaip86@gmail.com					|
 	|===========================================================|
 */
 

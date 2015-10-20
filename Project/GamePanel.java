@@ -2,11 +2,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -19,8 +17,7 @@ import javax.swing.JPanel;
 	|															|
 	|   	File name   :	 GamePanel.java						|
 	|		Date		:	 28/08/2015    	      				|
-	|		Author    	:	 Shai Pe'er 	(032571580)			|
-	|		Mail   		:	 shaip86@gmail.com					|
+	|		Author    	:	 Shai Pe'er 	 (032571580)		|
 	|===========================================================|
 */
 
@@ -29,6 +26,7 @@ public class GamePanel extends JPanel implements Runnable
 {
 	private static final long serialVersionUID = 1L;
 
+	
 	//===================================================================================
 	//						Initial Constant And Static Values
 	//===================================================================================	
@@ -52,7 +50,8 @@ public class GamePanel extends JPanel implements Runnable
 	private Boolean running;
 	private boolean isGameOver, isWin;
 	
-	private boolean up, down, left, right, space;
+	private boolean up, left, right;
+	
 	
 	//===================================================================================
 	//								Constructor
@@ -65,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable
 
 		//========== Key Listener ==========
 		addKeyListener(new Listener());
-		up = down = left = right = space = false;
+		up = left = right = false;
 		
 		
 		initialParameters();
@@ -122,9 +121,9 @@ public class GamePanel extends JPanel implements Runnable
 	//=================== Go To Sleep ==============================
 	private long goToSleep(long lastSleepTime)
 	{
-		long diff, sleepTime;
+		long sleepTime;
 		
-		diff = System.currentTimeMillis() - lastSleepTime;
+		
         sleepTime = PERIOD - lastSleepTime;
         if(sleepTime <= 0)
             sleepTime = 5;
@@ -375,49 +374,32 @@ public class GamePanel extends JPanel implements Runnable
 		        case KeyEvent.VK_LEFT:	 	left  = false;		break;
 		        case KeyEvent.VK_RIGHT : 	right = false;		break;
 		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
-		        case KeyEvent.VK_R: 		resetGame();		break;
 		        default: 				 						return;
-		    }
-			 
+		    }		 
 		}
     }
 	
 	
 	
-	
-	// only start the animation once the JPanel has been added to the JFrame
+	//===================================================================================
+	//								Start Game
+	//===================================================================================
     public void addNotify()
     { 
-        super.addNotify();   // creates the peer
-        startGame();    // start the thread
+    	// only start the animation once the JPanel has been added to the JFrame
+        super.addNotify();	// creates the peer
+        startGame();    	// start the thread
     }
     
-    public void startGame()
-    {
-        (new Thread(this)).start();
-    }
-     
-    public void gameOver()
-    {
-        isGameOver = true;
-    }
     
-    public void youWin()
-    {
-        isWin = true;
-    }
+	//===================================================================================
+	//								Game Status
+    //===================================================================================
     
-    private void resetGame()
-    {
-    	//initialParameters();
-    	
-    	try 
-        {
-            Thread.sleep(200);
-        }
-        catch(InterruptedException e){}
-    }
-    
+    public void startGame()		{	(new Thread(this)).start();		}
+    public void gameOver()		{	isGameOver = true;				}
+    public void youWin()		{	isWin = true;					}
+
     private void gameOverMessage(Graphics g)
     {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -432,12 +414,6 @@ public class GamePanel extends JPanel implements Runnable
         g.drawString("You Win", SCREEN_WIDTH/2 - 30, SCREEN_HEIGHT/2);
     }
     
-    private void resetGameMessage(Graphics g)
-    {
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
-        g.setColor(Color.WHITE);
-        g.drawString("For Reset Press 'R'", SCREEN_WIDTH/2 - 30, SCREEN_HEIGHT/2);
-    }
     
     private int getRandomLocationX()	{	return new Random().nextInt(SCREEN_WIDTH );	}
     private int getRandomLocationY()	{	return new Random().nextInt(SCREEN_HEIGHT);	}

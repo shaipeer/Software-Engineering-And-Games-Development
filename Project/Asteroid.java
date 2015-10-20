@@ -1,7 +1,4 @@
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
 
 /**
@@ -11,7 +8,7 @@ import java.util.Random;
 	|   	File name   :	 Astroid.java						|
 	|		Date		:	 28/08/2015    	      				|
 	|		Author    	:	 Shai Pe'er 	(032571580)			|
-	|		Mail   		:	 shaip86@gmail.com					|
+	|		Author    	:	 Snir Shilderman (301681334)		|
 	|===========================================================|
 */
 
@@ -23,14 +20,17 @@ public class Asteroid extends Sprite
 	//===================================================================================	
 	private static final Image asteroidImage = GameEngine.loadImage("src/asteroid.png");
 	
-	private final static int A_SIZE		= 60;	//Pixals per move
+	private final static int A_SIZE		= 60;	// Pixels per move
 	
-	private final int A_SPEED 			= 3;	//Pixals per move
-	private final int A_SPIN_SPEED 		= 10;	//Lower is faster
-	private final int MOVE_DELAY		= 5;	//
-	private final int LIVES				= 4;
+	private final int A_SPEED 			= 3;	// Pixels per move
+	private final int A_SPIN_SPEED 		= 10;	// Lower is faster
+	private final int MOVE_DELAY		= 5;	// The asteroid movement delay
+	private final int LIVES				= 3;	// The number of asteroid splits
+	
 	private int spinDelayCounter;
 	private int delay;
+	
+	
 	//===================================================================================
 	//								Constructor
 	//===================================================================================

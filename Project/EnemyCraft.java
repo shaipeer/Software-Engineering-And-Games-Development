@@ -16,7 +16,7 @@ import java.util.Iterator;
 */
 
 
-public class Craft extends Sprite
+public class EnemyCraft extends Sprite
 {
 	//===================================================================================
 	//						Initial Constant And Static Values
@@ -49,7 +49,7 @@ public class Craft extends Sprite
 	//===================================================================================
 	//								Constructor
 	//===================================================================================
-	public Craft(int x, int y, int w, int h)
+	public EnemyCraft(int x, int y, int w, int h)
 	{
 		super(x, y, w, h, GameEngine.toBufferedImage(craftImage, C_WIDTH, C_HEIGHT));
 		 

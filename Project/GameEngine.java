@@ -5,7 +5,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 
 import javax.imageio.ImageIO;
 
@@ -16,7 +15,6 @@ import javax.imageio.ImageIO;
 	|   	File name   :	 GameEngine.java					|
 	|		Date		:	 28/08/2015    	      				|
 	|		Author    	:	 Shai Pe'er 	(032571580)			|
-	|		Mail   		:	 shaip86@gmail.com					|
 	|===========================================================|
 */
 
@@ -52,7 +50,6 @@ public class GameEngine
 		}
 		
 		return img;
-		
 	}
 	
 	

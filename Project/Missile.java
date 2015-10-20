@@ -1,7 +1,4 @@
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 /**
 	|===========================================================|
@@ -10,7 +7,6 @@ import java.io.File;
 	|   	File name   :	 Missile.java						|
 	|		Date		:	 28/08/2015    	      				|
 	|		Author    	:	 Shai Pe'er 	(032571580)			|
-	|		Mail   		:	 shaip86@gmail.com					|
 	|===========================================================|
 */
 
@@ -24,7 +20,7 @@ public class Missile extends Sprite
 	private static final Image missileImage = GameEngine.loadImage("src/missile.png");
 	
 	private final static int M_SPEED 	= 3;		//Pixels per move
-	private final int M_MAX_DISTANCE 	= 8000;	//How long the missile will go in pixels   
+	private final int M_MAX_DISTANCE 	= 800;		//How long the missile will go in pixels   
 	
 	private final static int M_WIDTH 	= 15;		//Pixels per move
 	private final static int M_HEIGHT 	= 5;		//Pixels per move

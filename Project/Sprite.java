@@ -1,7 +1,5 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -14,7 +12,6 @@ import java.awt.image.BufferedImage;
 |   	File name   :	 Sprite.java						|
 |		Date		:	 28/08/2015    	      				|
 |		Author    	:	 Shai Pe'er 	(032571580)			|
-|		Mail   		:	 shaip86@gmail.com					|
 |===========================================================|
 */
 
@@ -24,15 +21,14 @@ public class Sprite
 	//===================================================================================
 	//						Initial Constant And Static Values
 	//===================================================================================
-    private static final int SIZE = 1; // default sprite's dimensions
-    protected BufferedImage bufImage;
-    protected int imageWidth, imageHeight; // image dimensions
+    protected BufferedImage bufImage;		
+    protected int imageWidth, imageHeight; 	// Image dimensions
     
-    protected int locX, locY, dx, dy;
-    protected int pWidth, pHeight;  // panel's dimensions
-    protected int angle;
-    protected int lives;
-    protected boolean destroy;
+    protected int locX, locY, dx, dy;		// Sprite location
+    protected int pWidth, pHeight;  		// Panel's dimensions
+    protected int angle;					// Sprite angle
+    protected int lives;					// Sprite number of lives
+    protected boolean destroy;				// is Sprite destroyed or not
     protected boolean atUpperWall, atButtonWall, atLeftWall, atRightWall;
     
     
@@ -59,6 +55,8 @@ public class Sprite
     
     }
    
+    
+    
 	//===================================================================================
 	//								Get Bounding Box
 	//===================================================================================
@@ -106,6 +104,7 @@ public class Sprite
     	drawAngledImage(g, bufImage, angle, locX, locY);
     }
     
+    
 	//===================================================================================
 	//								Draw Angled Image
 	//===================================================================================    
@@ -115,7 +114,7 @@ public class Sprite
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		int cx = img.getWidth() / 2;
+		int cx = img.getWidth()  / 2;
         int cy = img.getHeight() / 2;
  
         at.translate(cx + x, cy + y);
