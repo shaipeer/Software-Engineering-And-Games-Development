@@ -24,7 +24,7 @@ public class Craft extends Sprite
 	private static final Image craftImage = GameEngine.loadImage("src/craft.png");
 	
 	//========= Craft Dimensions ===========
-	private final static int C_WIDTH 		= 25;	//The craft width in pixels
+	private final static int C_WIDTH 		= 50;	//The craft width in pixels
 	private final static int C_HEIGHT 		= 25;	//The craft height in pixels
 	
 	//========= Craft Movement =============

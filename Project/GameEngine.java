@@ -28,7 +28,7 @@ public class GameEngine
 
 		img = img.getScaledInstance(width, height, Image.SCALE_FAST);
 		
-		BufferedImage bi = new BufferedImage (img.getWidth(null),height,BufferedImage.TYPE_INT_RGB);
+		BufferedImage bi = new BufferedImage (img.getWidth(null),height,BufferedImage.TRANSLUCENT);
 	     Graphics bg = bi.getGraphics();
 	     bg.drawImage(img, 0, 0, null);
 	     bg.dispose();

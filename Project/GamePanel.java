@@ -42,7 +42,6 @@ public class GamePanel extends JPanel implements Runnable
 	private final int ASTEROIDS_AT_SPLIT    = 2;
 	
 	//========= Game Paint ===========
-	private Image bgImage;
 	private BufferedImage dbImage;
 	
 	//========= Game Objects ===========
@@ -65,7 +64,6 @@ public class GamePanel extends JPanel implements Runnable
 	public GamePanel()
 	{
 		//========== Game Images ===========
-		bgImage = GameEngine.loadImage("src/bg.jpg");
 		dbImage = null;
 
 		//========== Key Listener ==========
@@ -103,11 +101,10 @@ public class GamePanel extends JPanel implements Runnable
 	//===================================================================================
 	public void paintComponent(Graphics g)
     {
-        super.paintComponent(g);
-        gameRender();
-        g.drawImage(dbImage, 0, 0, this);
+        //super.paintComponent(g);
+        //gameRender();
+        //g.drawImage(dbImage, 0, 0, this);
     }
-	
 	
 	
 	//===================================================================================
@@ -120,8 +117,8 @@ public class GamePanel extends JPanel implements Runnable
         
         while(running)
         {
-            gameUpdate();	// Update the logical game state
-            gameRender();	// Paint the screen into a buffer
+        	gameUpdate();	// Update the logical game state
+        	gameRender();	// Paint the screen into a buffer
             paintScreen();	// Active rendering - repaint
 
             before = goToSleep(before);
@@ -129,20 +126,22 @@ public class GamePanel extends JPanel implements Runnable
     }
 
 	//=================== Go To Sleep ==============================
-	private long goToSleep(long lastSleepTime)
+	private long goToSleep(long before)
 	{
-		long sleepTime;
+		long sleepTime, diff;
 		
 		
-        sleepTime = PERIOD - lastSleepTime;
+		diff = System.currentTimeMillis() - before;
+        sleepTime = PERIOD - before;
         if(sleepTime <= 0)
-            sleepTime = 5;
+            sleepTime = 20;
 
-        try 
-        {
+        try {
             Thread.sleep(sleepTime);
         }
         catch(InterruptedException e){}
+
+        before = System.currentTimeMillis();
 
         return System.currentTimeMillis();
 	}
@@ -168,9 +167,9 @@ public class GamePanel extends JPanel implements Runnable
 		if(left)	craft.moveLeft();
 		if(right) 	craft.moveRight();
 		
+		rManager.update();
 		craft.move();
 		
-		rManager.update();
     }
 	
 	private void checkCollisions()
@@ -179,8 +178,7 @@ public class GamePanel extends JPanel implements Runnable
 		
 		//checkMissilesCollision();
 	}
-	
-	
+		
 /*	private void checkCraftCollision()
 	{
 		for(int i = 0 ; i < asteroidList.size() ; i++)
