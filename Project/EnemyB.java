@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class EnemyB extends EnemyCraft
 {
 
-	private static final Image craftImage = GameEngine.loadImage("src/craft.png");
+	private static final Image craftImage = GameEngine.loadImage("src/enemy2.png");
 
 	//========= Craft Dimensions ===========
 	private final static int WIDTH 		= 25;	//The craft width in pixels
@@ -17,9 +17,16 @@ public class EnemyB extends EnemyCraft
 	{
 		super(x, y, w, h,craftImage,WIDTH,HEIGHT);
 		lives=LIVES;
+		moveInterval=2;
 		
 		//========== Generate Missiles ===========
 		missileList = new ArrayList<Missile>();
+	}
+	public void move()
+	{
+		
+		locX=locX-moveInterval;
+		//moveMissiles();
 	}
 
 }

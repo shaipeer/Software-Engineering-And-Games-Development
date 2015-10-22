@@ -34,11 +34,9 @@ public class EnemyCraft extends Sprite
 	//========= Craft Parameters ===========
 	protected final int HIT_BONUS   = 5;
 	
-	protected final int moveInterval = 5;
+	protected int moveInterval = 1;
 	protected int delay;
 	protected ArrayList<Missile> missileList;
-
-	private static final Image craftImage = GameEngine.loadImage("src/craft.png");
 
 	//===================================================================================
 	//								Constructor
@@ -60,8 +58,7 @@ public class EnemyCraft extends Sprite
 	public void move()
 	{
 		
-		
-		dx=dx-moveInterval;
+		locX=locX-moveInterval;
 		moveMissiles();
 	}
 	
@@ -91,7 +88,7 @@ public class EnemyCraft extends Sprite
     @Override
 	public void draw(Graphics g)
     {
-    	//drawAngledImage(g, bufImage, angle, locX, locY);
+    	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
     	
     	drawMissiles(g);
     }

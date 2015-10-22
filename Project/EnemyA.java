@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class EnemyA extends EnemyCraft
 {
 
-	private static final Image craftImage = GameEngine.loadImage("src/craft.png");
+	private static final Image craftImage = GameEngine.loadImage("src/enemy1.png");
 
 	//========= Craft Dimensions ===========
 	private final static int WIDTH 		= 25;	//The craft width in pixels

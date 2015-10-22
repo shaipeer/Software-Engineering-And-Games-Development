@@ -39,15 +39,15 @@ public class GamePanel extends JPanel implements Runnable
 	public final static  int SCREEN_HEIGHT  = 510; 
 	private static final int PERIOD 		= 60;
 	private final int INITIAL_ASTEROIDS     = 4;
-	private final int ASTEROIDS_AT_SPLIT    = 2;
-	
+	private static int enemyCount;
 	//========= Game Paint ===========
 	private BufferedImage dbImage;
 	
 	//========= Game Objects ===========
 	private Craft craft;
 	//private ArrayList<Asteroid> asteroidList;
-	
+	//private EnemyCraft[] enemies;
+	private ArrayList<EnemyCraft> enemies;
 	//========= Game Status =============
 	private Boolean running;
 	private boolean isGameOver, isWin;
@@ -71,9 +71,6 @@ public class GamePanel extends JPanel implements Runnable
 		up = left = right = false;
 		
 		
-		try {
-			rManager = new RibbonsManager(SCREEN_WIDTH, SCREEN_HEIGHT);
-		} catch (URISyntaxException e) {}
 		
 		initialParameters();
 		
@@ -91,20 +88,27 @@ public class GamePanel extends JPanel implements Runnable
 		running    	= true;
 		isWin 		= false;
 		isGameOver 	= false;
-		
+		enemyCount=0;
 		//========== Game Craft ===========		
 		craft = new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
+		enemies=new ArrayList<EnemyCraft>();
+		
+			
+		try {
+			rManager = new RibbonsManager(SCREEN_WIDTH, SCREEN_HEIGHT);
+		} catch (URISyntaxException e) {}
 	}
 	
 	//===================================================================================
 	//								Paint Component
 	//===================================================================================
-	public void paintComponent(Graphics g)
-    {
-        //super.paintComponent(g);
-        //gameRender();
-        //g.drawImage(dbImage, 0, 0, this);
-    }
+//	public void paintComponent(Graphics g)
+//    {
+//        super.paintComponent(g);
+//        gameRender();
+//        g.drawImage(dbImage, 0, 0, this);
+//    }
+	
 	
 	
 	//===================================================================================
@@ -117,8 +121,11 @@ public class GamePanel extends JPanel implements Runnable
         
         while(running)
         {
-        	gameUpdate();	// Update the logical game state
-        	gameRender();	// Paint the screen into a buffer
+        	enemyCount++;
+        	if(enemyCount==100)
+        		createEnemy();
+            gameUpdate();	// Update the logical game state
+            gameRender();	// Paint the screen into a buffer
             paintScreen();	// Active rendering - repaint
 
             before = goToSleep(before);
@@ -128,21 +135,19 @@ public class GamePanel extends JPanel implements Runnable
 	//=================== Go To Sleep ==============================
 	private long goToSleep(long before)
 	{
-		long sleepTime, diff;
-		
+		long sleepTime,diff;
 		
 		diff = System.currentTimeMillis() - before;
         sleepTime = PERIOD - before;
         if(sleepTime <= 0)
             sleepTime = 20;
 
-        try {
+        try 
+        {
             Thread.sleep(sleepTime);
         }
         catch(InterruptedException e){}
-
         before = System.currentTimeMillis();
-
         return System.currentTimeMillis();
 	}
 	
@@ -169,7 +174,8 @@ public class GamePanel extends JPanel implements Runnable
 		
 		rManager.update();
 		craft.move();
-		
+		for(EnemyCraft enemy:enemies)
+			enemy.move();
     }
 	
 	private void checkCollisions()
@@ -178,7 +184,8 @@ public class GamePanel extends JPanel implements Runnable
 		
 		//checkMissilesCollision();
 	}
-		
+	
+	
 /*	private void checkCraftCollision()
 	{
 		for(int i = 0 ; i < asteroidList.size() ; i++)
@@ -251,7 +258,26 @@ public class GamePanel extends JPanel implements Runnable
 			*/
 	}
 	
-
+public void createEnemy()
+{
+	EnemyCraft e=null;
+	Random rnd=new Random();
+	int enemy = (rnd.nextInt(3) + 1);
+	int place=(rnd.nextInt(10) + 1);
+	switch(enemy)
+	{
+	case 1:	e=new EnemyA(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);
+		break;
+	case 2: e=new EnemyB(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);
+		break;
+	case 3: e=new EnemyC(SCREEN_WIDTH,SCREEN_HEIGHT-100,SCREEN_WIDTH,SCREEN_HEIGHT);
+		break;
+	default:break;
+	}
+	enemies.add(e);
+	enemyCount=0;
+	
+}
 
 	//-----------------------------------------------------------------------------------
 	//								Game Render
@@ -262,13 +288,14 @@ public class GamePanel extends JPanel implements Runnable
         
         dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
         dbg = dbImage.createGraphics();
-        // dbg.setColor();
-        //dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+//         dbg.setColor(Color.WHITE);
+//        dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         //========= Draw background ==========
         rManager.display(dbg);
-        
+        craft.draw(dbg); 
+		for(EnemyCraft enemy:enemies)
+			enemy.draw(dbg);
         //======= Draw game elements =========
-        craft.draw(dbg);
               
         
   /*      

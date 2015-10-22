@@ -23,6 +23,7 @@ public class RibbonsManager {
 //        File pathSky = new File(new File(".").getAbsolutePath()+ "//Sky.png");
 //        File pathSkyLine = new File(new File(".").getAbsolutePath()+ "//Skyline.gif");
 //        File pathLamps = new File(new File(".").getAbsolutePath()+ "//Lamps.png");
+
         
         BufferedImage skyImg = null, skylineImg = null, lampsImg = null;
         try {
@@ -32,9 +33,9 @@ public class RibbonsManager {
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ribbons[0] = new Ribbon(pWidth, pHeight, skyImg, 2);
-        ribbons[1] = new Ribbon(pWidth, pHeight, skylineImg, 3);
-        ribbons[2] = new Ribbon(pWidth, pHeight, lampsImg, 5);
+        ribbons[0] = new Ribbon(pWidth, pHeight, skyImg, 1);
+        ribbons[1] = new Ribbon(pWidth, pHeight, skylineImg, 2);
+        ribbons[2] = new Ribbon(pWidth, pHeight, lampsImg, 3);
         
       //  for(Ribbon r : ribbons)
       //  	r.moveLeft();
@@ -51,4 +52,5 @@ public class RibbonsManager {
             for(Ribbon r : ribbons)
                 r.update();
     }
+  
 }
