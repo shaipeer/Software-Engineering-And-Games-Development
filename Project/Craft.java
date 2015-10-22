@@ -161,20 +161,24 @@ public class Craft extends Sprite
 	}
 	public void moveUp()
 	{
-		locY -= dy;
+		if (locY > 0)
+			locY -= dy;
 	}
 	
 	public void moveDown()
 	{
-		locY += dy;
+		if (locY < pHeight - groundHeight - 80)
+			locY += dy;
 	}
 	public void moveLeft()
 	{
-		locX -= dx;
+		if (locX > 0)
+			locX -= dx;
 	}
 	public void moveRight()
 	{
-		locX += dx;
+		if (locX < pWidth - 80)
+			locX += dx;
 	}
 	
 	

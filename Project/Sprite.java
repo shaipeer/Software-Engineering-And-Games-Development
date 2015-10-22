@@ -26,6 +26,7 @@ public class Sprite
     
     protected int locX, locY, dx, dy;		// Sprite location
     protected int pWidth, pHeight;  		// Panel's dimensions
+    protected int groundHeight;
     protected int lives;					// Sprite number of lives
     protected boolean destroy;				// is Sprite destroyed or not
     protected boolean atUpperWall, atButtonWall, atLeftWall, atRightWall;
@@ -40,6 +41,7 @@ public class Sprite
         locY = y;
         dx = 5;
 		dy = 5;
+		groundHeight = 25;
 		destroy = false;
         pWidth = w;
         pHeight = h;
