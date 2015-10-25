@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -9,10 +8,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-
 import javax.swing.JPanel;
-
-import org.w3c.dom.css.RGBColor;
 
 /**
 	|===========================================================|
@@ -38,7 +34,6 @@ public class GamePanel extends JPanel implements Runnable
 	public final static  int SCREEN_WIDTH   = 1000; 
 	public final static  int SCREEN_HEIGHT  = 510; 
 	private static final int PERIOD 		= 60;
-	private final int INITIAL_ASTEROIDS     = 4;
 	private static int enemyCount;
 	//========= Game Paint ===========
 	private BufferedImage dbImage;
@@ -48,15 +43,11 @@ public class GamePanel extends JPanel implements Runnable
 	//private ArrayList<Asteroid> asteroidList;
 	//private EnemyCraft[] enemies;
 	private ArrayList<EnemyCraft> enemies;
+	
 	//========= Game Status =============
 	private Boolean running;
 	private boolean isGameOver, isWin;
-	
 	private boolean up, down, left, right;
-	
-	
-	
-	private Ribbon skyRibbon, skyLineRibbon;
 	private RibbonsManager rManager;
 	//===================================================================================
 	//								Constructor
@@ -70,28 +61,21 @@ public class GamePanel extends JPanel implements Runnable
 		addKeyListener(new Listener());
 		up = left = right = false;
 		
-		
-		
 		initialParameters();
-		
 	}
 
 	
 	private void initialParameters()
 	{
-		//========== Generate Asteroids ===========
-/*		asteroidList = new ArrayList<Asteroid>();
-		for(int i = 0 ; i < INITIAL_ASTEROIDS ; i++)
-			asteroidList.add(new Asteroid(getRandomLocationX(), getRandomLocationY(), SCREEN_WIDTH, SCREEN_HEIGHT));
-	*/	
 		//========== Game Status ===========
 		running    	= true;
 		isWin 		= false;
 		isGameOver 	= false;
-		enemyCount=0;
+		enemyCount	= 0;
+		
 		//========== Game Craft ===========		
 		craft = new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
-		enemies=new ArrayList<EnemyCraft>();
+		enemies = new ArrayList<EnemyCraft>();
 		
 			
 		try {
@@ -122,8 +106,9 @@ public class GamePanel extends JPanel implements Runnable
         while(running)
         {
         	enemyCount++;
-        	if(enemyCount==100)
+        	if(enemyCount == 100)
         		createEnemy();
+        	
             gameUpdate();	// Update the logical game state
             gameRender();	// Paint the screen into a buffer
             paintScreen();	// Active rendering - repaint
@@ -174,84 +159,69 @@ public class GamePanel extends JPanel implements Runnable
 		
 		rManager.update();
 		craft.move();
-		for(EnemyCraft enemy:enemies)
-			enemy.move();
+		
+		
+		
+		try
+		{
+			for(EnemyCraft enemy : enemies)
+			{
+				if (enemy.isDestroy())
+					enemies.remove(enemy);
+				else
+					enemy.move();
+			}
+			
+		}
+		catch (Exception e)
+		{}
+		
     }
 	
 	private void checkCollisions()
 	{
-		//checkCraftCollision();
+		checkCraftCollision();
 		
-		//checkMissilesCollision();
+		checkMissilesCollision();
 	}
 	
 	
-/*	private void checkCraftCollision()
+	private void checkCraftCollision()
 	{
-		for(int i = 0 ; i < asteroidList.size() ; i++)
-			if(craft.hit(asteroidList.get(i)))
-			{
-				splitAsteroid(i);
-				
-				if(craft.getLives() <= 0)
-					gameOver();
-				return;
-			}
-		
-	}
-	*/
-	
-	private void checkMissilesCollision()
-	{
-		/*
 		try
 		{
-			Asteroid asteroid;
-			Iterator<Asteroid> iter = asteroidList.iterator();
+			EnemyCraft enemy;
+			Iterator<EnemyCraft> iter = enemies.iterator();
 			
 			while(iter.hasNext())
 			{
-				asteroid = iter.next();
-				if(craft.missileHit(asteroid))
+				enemy = iter.next();
+				if(craft.hit(enemy))
 				{
-					for(int i = 0 ; i < ASTEROIDS_AT_SPLIT ; i++)
-						asteroidList.add(new Asteroid(asteroid));
 					iter.remove();
+					
+					if(craft.getLives() <= 0)
+						gameOver();
+					return;
 				}
+				if()
 			}
 		}
 		catch (Exception e)
 		{}
-		*/
-/*		
-		for(int i = 0 ; i < asteroidList.size() ; i++)
+		
+	}
+	
+	
+	private void checkMissilesCollision()
+	{	
+		/*for(int i = 0 ; i < asteroidList.size() ; i++)
 			if(craft.missileHit(asteroidList.get(i)))//////////////////////////////////////////NULL POINTER EXEPTION
 			{
 				splitAsteroid(i);
 				i--;
 			}
-	*/	
-		
-		/*
-		try
-		{
-		ArrayList<Asteroid> toRemove = new ArrayList<Asteroid>();
-		ArrayList<Asteroid> toAdd    = new ArrayList<Asteroid>();
-		for(Asteroid asteroid : asteroidList)
-			if(craft.missileHit(asteroid))
-			{
-				for(int i = 0 ; i < ASTEROIDS_AT_SPLIT ; i++)
-					toAdd.add(new Asteroid(asteroid));
-				toRemove.add(asteroid);
-				
-			}
-		
-		asteroidList.removeAll(toRemove);
-		asteroidList.addAll(toAdd);
-		}
-		catch(Exception e){}
-		*/
-		
+			*/
 		
 /*		if(asteroidList.size() == 0)
 			youWin();
@@ -260,22 +230,20 @@ public class GamePanel extends JPanel implements Runnable
 	
 public void createEnemy()
 {
-	EnemyCraft e=null;
-	Random rnd=new Random();
-	int enemy = (rnd.nextInt(3) + 1);
-	int place=(rnd.nextInt(10) + 1);
+	EnemyCraft newEnemy = null;
+	Random rnd	 		= new Random();
+	int enemy	 		= (rnd.nextInt(3) + 1);
+	int place	 		= (rnd.nextInt(10) + 1);
+	
 	switch(enemy)
 	{
-	case 1:	e=new EnemyA(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);
-		break;
-	case 2: e=new EnemyB(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);
-		break;
-	case 3: e=new EnemyC(SCREEN_WIDTH,SCREEN_HEIGHT-100,SCREEN_WIDTH,SCREEN_HEIGHT);
-		break;
-	default:break;
+		case 1:	newEnemy = new EnemyA(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
+		case 2: newEnemy = new EnemyB(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
+		case 3: newEnemy = new EnemyC(SCREEN_WIDTH,SCREEN_HEIGHT-100,SCREEN_WIDTH,SCREEN_HEIGHT);			break;
+		default:break;
 	}
-	enemies.add(e);
-	enemyCount=0;
+	enemies.add(newEnemy);
+	enemyCount = 0;
 	
 }
 
@@ -298,20 +266,20 @@ public void createEnemy()
         //======= Draw game elements =========
               
         
-  /*      
+       
         ////////////////////////////////////////////////////////////////
         dbg.setFont(new Font("Arial", Font.PLAIN, 30));
-        dbg.setColor(Color.WHITE);
+        dbg.setColor(Color.BLACK);
         
-        dbg.drawString("Score: " + craft.getScore(), SCREEN_WIDTH-SCREEN_WIDTH/4, 60);
-        for(int i = 1 ; i <= craft.getLives() ; i++)
-        	Sprite.drawAngledImage(dbg, craft.getCraftImage(), 270, i * 30, 30);
+       // dbg.drawString("Score: " + craft.getScore(), SCREEN_WIDTH-SCREEN_WIDTH/4, 60);
+       // for(int i = 1 ; i <= craft.getLives() ; i++)
+       // 	Sprite.drawAngledImage(dbg, craft.getCraftImage(), 270, i * 30, 30);
         
         
-       // dbg.drawString(craft.toString(), 30, 90);
+       dbg.drawString(craft.toString(), 120, 120);
         
         //////////////////////////////////////////////////////////
-  */      
+        
         //====== Check if game is over =======
         if(isGameOver)
         {
@@ -385,7 +353,7 @@ public void createEnemy()
 			    case KeyEvent.VK_DOWN:	 	down  = false;		break;
 		        case KeyEvent.VK_LEFT:	 	left  = false;		break;
 		        case KeyEvent.VK_RIGHT : 	right = false;		break;
-//		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
+		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
 		        default: 				 						return;
 		    }		 
 		}

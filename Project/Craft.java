@@ -30,8 +30,8 @@ public class Craft extends Sprite
 	//========= Craft Movement =============
 	private final int TOP_SPEED      		= 10;	// The craft top speed
 	private final int MOVE_DELAY			= 5;	// The craft movement delay, lower is faster
-	private final double FRICTION 			= 0.1;	// The craft friction, need to be lower then 1
-	private final int ROTATION_SPEED 		= 2;	// The craft rotation speed
+//	private final double FRICTION 			= 0.1;	// The craft friction, need to be lower then 1
+//	private final int ROTATION_SPEED 		= 2;	// The craft rotation speed
 	private final int ACCELERATION_SPEED	= 2;	// The craft acceleration speed
 	
 	//========= Game Play ==================
@@ -73,7 +73,7 @@ public class Craft extends Sprite
 		
 		if(delay++ >= MOVE_DELAY)
 		{
-			velocity -= FRICTION * velocity;
+			//velocity -= FRICTION * velocity;
 			delay = 0;
 		
 			//locX += dx;
@@ -123,9 +123,9 @@ public class Craft extends Sprite
 	//								Collisions
     //===================================================================================
     
-/*    public boolean hit(Missile Mi)
+    public boolean hit(EnemyCraft enemy)
     {
-    	if(getBoundingBox().intersects(asteroid.getBoundingBox()))
+    	if(getBoundingBox().intersects(enemy.getBoundingBox()))
     	{
     		lives--;
     		locX = pWidth/2;
@@ -135,10 +135,10 @@ public class Craft extends Sprite
     	return false;	
     }
     
-    public boolean missileHit(Asteroid asteroid)
+    public boolean missileHit(EnemyCraft enemy)
     {
     	for(int i = 0 ; i < missileList.size() ; i++)
-    		if(missileList.get(i).getBoundingBox().intersects(asteroid.getBoundingBox()))
+    		if(missileList.get(i).getBoundingBox().intersects(enemy.getBoundingBox()))
 			{
     			missileList.remove(i);
     			score += HIT_BONUS;
@@ -147,9 +147,7 @@ public class Craft extends Sprite
     	
     	return false;
     }
-    
-    
-*/    
+      
 	//===================================================================================
 	//								Movement
 	//===================================================================================
@@ -182,12 +180,12 @@ public class Craft extends Sprite
 	}
 	
 	
-	/*	public void fire()
+	public void fire()
 	{
 		if( (missileList.size() < MAX_MISSILES) || (MAX_MISSILES == 0) )
-			missileList.add( new Missile(locX, locY, pWidth, pHeight) );
+			missileList.add( new Missile(locX+30, locY+25, pWidth, pHeight) );
 	}
-	 */
+	
 	
 	
 	//===================================================================================
@@ -202,6 +200,6 @@ public class Craft extends Sprite
 	//===================================================================================
 	public String toString()
 	{
-		return "";//"Craft Angle: " + angle + "   Craft Velocity: " + Math.round(velocity) + "   Missiles: " + missileList.size();
+		return "Missiles: " + missileList.size();
 	}
 }

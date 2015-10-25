@@ -17,7 +17,7 @@ public class MainFrame
 	public static void main(String[] args) 
 	{
 		//======= Frame Settings ==============
-		JFrame frame = new JFrame("Astroids");
+		JFrame frame = new JFrame("Space Craft");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(GamePanel.SCREEN_WIDTH, GamePanel.SCREEN_HEIGHT);
 		frame.setResizable(false);
