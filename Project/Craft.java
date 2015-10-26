@@ -1,8 +1,11 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.w3c.dom.css.RGBColor;
 
 
 /**
@@ -109,12 +112,28 @@ public class Craft extends Sprite
     	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
     	
     	drawMissiles(g);
+    	
+    	GameEngine.printText(g,50, 50, 25, "Score: " + score);
+    	
+    	drawLifeBar(g);
     }
 	
     private void drawMissiles(Graphics g)
     {
     	for(int i = 0 ; i < missileList.size() ; i++)
     		missileList.get(i).draw(g);
+    }
+    
+    private void drawLifeBar(Graphics g)
+    {
+    	int barSize = 150;
+    	int barLocX = 50; 
+    	int barLocY = 60;
+    	
+    	g.drawRect(barLocX, 	barLocY, 	 barSize, 20);
+    	g.drawRect(barLocX + 1, barLocY + 1, barSize, 20);
+    	g.setColor(Color.green);    	
+    	g.fillRect(barLocX + 1, barLocY + 1, (barSize/LIVES) * lives , 20);
     }
     
     

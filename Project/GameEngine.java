@@ -66,14 +66,11 @@ public class GameEngine
 		
 	}
 
-	public static void printTitle(Graphics g, int locX, int locY)
+	public static void printText(Graphics g, int locX, int locY, int textSize, String text)
 	{
-		////////////////////////////////////////////////////////////////
-		g.setFont(new Font("Arial", Font.PLAIN, 10));
+		g.setFont(new Font("Arial", Font.PLAIN, textSize));
 		g.setColor(Color.BLACK);
 		
-		g.drawString("x: " + locX + "y: " + locY , locX, locY);
-		
-		//////////////////////////////////////////////////////////
+		g.drawString(text, locX, locY);
 	}
 }

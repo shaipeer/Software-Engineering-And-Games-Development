@@ -258,18 +258,7 @@ public void createEnemy()
         craft.draw(dbg); 
 		for(EnemyCraft enemy:enemies)
 			enemy.draw(dbg);
-        //======= Draw game elements =========
-              
-        
-       
-        ////////////////////////////////////////////////////////////////
-        dbg.setFont(new Font("Arial", Font.PLAIN, 30));
-        dbg.setColor(Color.BLACK);
-        
-        dbg.drawString(craft.toString(), 120, 120);
-        
-        //////////////////////////////////////////////////////////
-        
+
         //====== Check if game is over =======
         if(isGameOver)
         {

@@ -69,6 +69,6 @@ public class EnemyCraft extends Sprite
 	//===================================================================================
 	public String toString()
 	{
-		return ""; //"Craft Angle: " + angle + "   Craft Velocity: " + Math.round(velocity) + "   Missiles: " + missileList.size();
+		return "";
 	}
 }
