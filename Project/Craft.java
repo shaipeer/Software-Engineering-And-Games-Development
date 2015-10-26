@@ -183,7 +183,7 @@ public class Craft extends Sprite
 	public void fire()
 	{
 		if( (missileList.size() < MAX_MISSILES) || (MAX_MISSILES == 0) )
-			missileList.add( new Missile(locX+30, locY+25, pWidth, pHeight) );
+			 missileList.add( new Missile(locX+30, locY+25, pWidth, pHeight) );
 	}
 	
 	
@@ -200,6 +200,6 @@ public class Craft extends Sprite
 	//===================================================================================
 	public String toString()
 	{
-		return "Missiles: " + missileList.size();
+		return "Score: " + score;
 	}
 }

@@ -46,11 +46,12 @@ public class Sprite
         pWidth = w;
         pHeight = h;
         atUpperWall = atButtonWall = atLeftWall = atRightWall = false;
+        
         bufImage = img;
         if(bufImage != null)
         {
             imageWidth  = bufImage.getWidth(null);
-            imageHeight = bufImage.getHeight(null);
+            imageHeight = bufImage.getHeight(null);///////////////////////////////////////////////////////
         }
     
     }

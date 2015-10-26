@@ -28,19 +28,15 @@ public class EnemyCraft extends Sprite
 	
 	protected int moveInterval = 1;
 	protected int delay;
-	//protected ArrayList<Missile> missileList;
 
 	//===================================================================================
 	//								Constructor
 	//===================================================================================
-	public EnemyCraft(int x, int y, int w, int h,Image craftImage, int width, int height)
+	public EnemyCraft(int x, int y, int w, int h, BufferedImage craftImage)
 	{
-		super(x, y, w, h, GameEngine.toBufferedImage(craftImage, width, height));
+		super(x, y, w, h, craftImage);
 		 
 		delay = 0;
-		
-		//========== Generate Missiles ===========
-		//missileList = new ArrayList<Missile>();
 	}
 	
 	//===================================================================================
@@ -49,7 +45,7 @@ public class EnemyCraft extends Sprite
 	@Override
 	public void move()
 	{
-		locX=locX-moveInterval;
+		locX = locX - moveInterval;
 	}
 	
 	//===================================================================================
@@ -58,14 +54,13 @@ public class EnemyCraft extends Sprite
     @Override
 	public void draw(Graphics g)
     {
-    	g.drawImage(bufImage, locX + (pWidth/2), locY + (pHeight/2), null);
+    	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
     }
 
 	
 	//===================================================================================
 	//								Getters
 	//===================================================================================
-//	public int getScore()					{	return score;		}
 	public BufferedImage getCraftImage()	{	return bufImage;	}
 	
 	

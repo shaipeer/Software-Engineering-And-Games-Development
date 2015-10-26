@@ -176,6 +176,7 @@ public class GamePanel extends JPanel implements Runnable
 		catch (Exception e)
 		{}
 		
+		checkCollisions();
     }
 	
 	private void checkCollisions()
@@ -204,7 +205,11 @@ public class GamePanel extends JPanel implements Runnable
 						gameOver();
 					return;
 				}
-				if()
+				
+				else if(craft.missileHit(enemy))
+				{
+					iter.remove();
+				}
 			}
 		}
 		catch (Exception e)
@@ -214,18 +219,8 @@ public class GamePanel extends JPanel implements Runnable
 	
 	
 	private void checkMissilesCollision()
-	{	
-		/*for(int i = 0 ; i < asteroidList.size() ; i++)
-			if(craft.missileHit(asteroidList.get(i)))//////////////////////////////////////////NULL POINTER EXEPTION
-			{
-				splitAsteroid(i);
-				i--;
-			}
-			*/
+	{
 		
-/*		if(asteroidList.size() == 0)
-			youWin();
-			*/
 	}
 	
 public void createEnemy()
@@ -239,7 +234,7 @@ public void createEnemy()
 	{
 		case 1:	newEnemy = new EnemyA(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
 		case 2: newEnemy = new EnemyB(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
-		case 3: newEnemy = new EnemyC(SCREEN_WIDTH,SCREEN_HEIGHT-100,SCREEN_WIDTH,SCREEN_HEIGHT);			break;
+		case 3: newEnemy = new EnemyC(SCREEN_WIDTH,SCREEN_HEIGHT-120,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
 		default:break;
 	}
 	enemies.add(newEnemy);
@@ -271,12 +266,7 @@ public void createEnemy()
         dbg.setFont(new Font("Arial", Font.PLAIN, 30));
         dbg.setColor(Color.BLACK);
         
-       // dbg.drawString("Score: " + craft.getScore(), SCREEN_WIDTH-SCREEN_WIDTH/4, 60);
-       // for(int i = 1 ; i <= craft.getLives() ; i++)
-       // 	Sprite.drawAngledImage(dbg, craft.getCraftImage(), 270, i * 30, 30);
-        
-        
-       dbg.drawString(craft.toString(), 120, 120);
+        dbg.drawString(craft.toString(), 120, 120);
         
         //////////////////////////////////////////////////////////
         
