@@ -5,8 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.w3c.dom.css.RGBColor;
-
 
 /**
 	|===========================================================|
@@ -33,8 +31,6 @@ public class Craft extends Sprite
 	//========= Craft Movement =============
 	private final int TOP_SPEED      		= 10;	// The craft top speed
 	private final int MOVE_DELAY			= 5;	// The craft movement delay, lower is faster
-//	private final double FRICTION 			= 0.1;	// The craft friction, need to be lower then 1
-//	private final int ROTATION_SPEED 		= 2;	// The craft rotation speed
 	private final int ACCELERATION_SPEED	= 2;	// The craft acceleration speed
 	
 	//========= Game Play ==================
@@ -109,7 +105,8 @@ public class Craft extends Sprite
     @Override
 	public void draw(Graphics g)
     {
-    	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
+    	//g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
+    	g.drawImage(bufImage, locX, locY, null);
     	
     	drawMissiles(g);
     	
@@ -184,7 +181,7 @@ public class Craft extends Sprite
 	
 	public void moveDown()
 	{
-		if (locY < pHeight - groundHeight - 80)
+		if (locY < pHeight - groundHeight - 65)
 			locY += dy;
 	}
 	public void moveLeft()
@@ -194,7 +191,7 @@ public class Craft extends Sprite
 	}
 	public void moveRight()
 	{
-		if (locX < pWidth - 80)
+		if (locX < pWidth - 65)
 			locX += dx;
 	}
 	
@@ -202,7 +199,7 @@ public class Craft extends Sprite
 	public void fire()
 	{
 		if( (missileList.size() < MAX_MISSILES) || (MAX_MISSILES == 0) )
-			 missileList.add( new Missile(locX+30, locY+25, pWidth, pHeight) );
+			 missileList.add( new Missile(locX+20, locY+15, pWidth, pHeight) );
 	}
 	
 	

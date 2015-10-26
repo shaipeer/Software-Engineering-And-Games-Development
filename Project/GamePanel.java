@@ -40,9 +40,8 @@ public class GamePanel extends JPanel implements Runnable
 	
 	//========= Game Objects ===========
 	private Craft craft;
-	//private ArrayList<Asteroid> asteroidList;
-	//private EnemyCraft[] enemies;
 	private ArrayList<EnemyCraft> enemies;
+	private ArrayList<Explosion> explosions;
 	
 	//========= Game Status =============
 	private Boolean running;
@@ -74,9 +73,9 @@ public class GamePanel extends JPanel implements Runnable
 		enemyCount	= 0;
 		
 		//========== Game Craft ===========		
-		craft = new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
-		enemies = new ArrayList<EnemyCraft>();
-		
+		craft 		= new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
+		enemies 	= new ArrayList<EnemyCraft>();
+		explosions 	= new ArrayList<Explosion>();
 			
 		try {
 			rManager = new RibbonsManager(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -150,8 +149,6 @@ public class GamePanel extends JPanel implements Runnable
 	//-----------------------------------------------------------------------------------
 	public void gameUpdate()
     {
-		//checkCollisions();
-		
 		if(up)		craft.moveUp();
 		if(down)	craft.moveDown();
 		if(left)	craft.moveLeft();
@@ -168,6 +165,8 @@ public class GamePanel extends JPanel implements Runnable
 			{
 				if (enemy.isDestroy())
 					enemies.remove(enemy);
+				else if(enemy.getLocX() < -enemy.getImageWidth())
+					enemies.remove(enemy);
 				else
 					enemy.move();
 			}
@@ -178,16 +177,9 @@ public class GamePanel extends JPanel implements Runnable
 		
 		checkCollisions();
     }
+
 	
 	private void checkCollisions()
-	{
-		checkCraftCollision();
-		
-		checkMissilesCollision();
-	}
-	
-	
-	private void checkCraftCollision()
 	{
 		try
 		{
@@ -208,7 +200,7 @@ public class GamePanel extends JPanel implements Runnable
 				
 				else if(craft.missileHit(enemy))
 				{
-					iter.remove();
+					enemy.hit();
 				}
 			}
 		}
@@ -217,30 +209,24 @@ public class GamePanel extends JPanel implements Runnable
 		
 	}
 	
-	
-	private void checkMissilesCollision()
+
+	public void createEnemy()
 	{
+		int enemy	 		= (new Random().nextInt(3) + 1);
+		int place	 		= (new Random().nextInt(10) + 1);
+		EnemyCraft newEnemy = null;
+		
+		switch(enemy)
+		{
+			case 1:	newEnemy = new EnemyA(SCREEN_WIDTH, SCREEN_HEIGHT/place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
+			case 2: newEnemy = new EnemyB(SCREEN_WIDTH, SCREEN_HEIGHT/place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
+			case 3: newEnemy = new EnemyC(SCREEN_WIDTH, SCREEN_HEIGHT-100,   SCREEN_WIDTH, SCREEN_HEIGHT);		break;
+			default:break;
+		}
+		enemies.add(newEnemy);
+		enemyCount = 0;
 		
 	}
-	
-public void createEnemy()
-{
-	EnemyCraft newEnemy = null;
-	Random rnd	 		= new Random();
-	int enemy	 		= (rnd.nextInt(3) + 1);
-	int place	 		= (rnd.nextInt(10) + 1);
-	
-	switch(enemy)
-	{
-		case 1:	newEnemy = new EnemyA(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
-		case 2: newEnemy = new EnemyB(SCREEN_WIDTH,SCREEN_HEIGHT/place,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
-		case 3: newEnemy = new EnemyC(SCREEN_WIDTH,SCREEN_HEIGHT-120,SCREEN_WIDTH,SCREEN_HEIGHT);		break;
-		default:break;
-	}
-	enemies.add(newEnemy);
-	enemyCount = 0;
-	
-}
 
 	//-----------------------------------------------------------------------------------
 	//								Game Render
@@ -251,15 +237,16 @@ public void createEnemy()
         
         dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
         dbg = dbImage.createGraphics();
-//         dbg.setColor(Color.WHITE);
-//        dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        
+        
         //========= Draw background ==========
         rManager.display(dbg);
         craft.draw(dbg); 
 		for(EnemyCraft enemy:enemies)
 			enemy.draw(dbg);
 
-        //====== Check if game is over =======
+        
+		//====== Check if game is over =======
         if(isGameOver)
         {
             gameOverMessage(dbg);

@@ -22,13 +22,12 @@ public class Sprite
 	//						Initial Constant And Static Values
 	//===================================================================================
     protected BufferedImage bufImage;		
-    protected int imageWidth, imageHeight; 	// Image dimensions
-    
+    protected int imageWidth, imageHeight; 	// Image dimensions  
     protected int locX, locY, dx, dy;		// Sprite location
     protected int pWidth, pHeight;  		// Panel's dimensions
-    protected int groundHeight;
+    protected int groundHeight;				// 
     protected int lives;					// Sprite number of lives
-    protected boolean destroy;				// is Sprite destroyed or not
+    protected boolean destroy;				// Is Sprite destroyed or not
     protected boolean atUpperWall, atButtonWall, atLeftWall, atRightWall;
     
     
@@ -95,7 +94,8 @@ public class Sprite
 	//===================================================================================
     public void draw(Graphics g)
     {
-    	g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
+    	//g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
+    	g.drawImage(bufImage, locX, locY, null);
     }
 
     
