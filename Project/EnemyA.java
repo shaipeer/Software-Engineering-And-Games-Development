@@ -10,7 +10,7 @@ public class EnemyA extends EnemyCraft
 	private final static int WIDTH 		= 50;	//The craft width in pixels
 	
 	//========= Craft Dimensions ===========
-	private final static int LIVES = 1;						// The number of craft lives
+	private final static int LIVES = 3;						// The number of craft lives
 
 	
 	public EnemyA(int x, int y, int w, int h) 

@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable
 	public final static  int SCREEN_WIDTH   = 1000; 
 	public final static  int SCREEN_HEIGHT  = 510; 
 	private static final int PERIOD 		= 60;
-	private static int enemyCount;
+	
 	//========= Game Paint ===========
 	private BufferedImage dbImage;
 	
@@ -44,10 +44,16 @@ public class GamePanel extends JPanel implements Runnable
 	private ArrayList<Explosion> explosions;
 	
 	//========= Game Status =============
+	private static int enemyCount;
 	private Boolean running;
+	private int difficulty;
+	private int level;
+	
 	private boolean isGameOver, isWin;
 	private boolean up, down, left, right;
 	private RibbonsManager rManager;
+	
+	
 	//===================================================================================
 	//								Constructor
 	//===================================================================================
@@ -59,6 +65,9 @@ public class GamePanel extends JPanel implements Runnable
 		//========== Key Listener ==========
 		addKeyListener(new Listener());
 		up = left = right = false;
+		
+		difficulty = 1;
+		level = 1;
 		
 		initialParameters();
 	}
@@ -102,18 +111,29 @@ public class GamePanel extends JPanel implements Runnable
 		long before = System.currentTimeMillis();
 		running 	= true;
         
-        while(running)
-        {
-        	enemyCount++;
-        	if(enemyCount == 100)
-        		createEnemy();
-        	
-            gameUpdate();	// Update the logical game state
-            gameRender();	// Paint the screen into a buffer
-            paintScreen();	// Active rendering - repaint
-
-            before = goToSleep(before);
-        }
+		while(true)
+		{
+			//show menu
+			
+			
+			showMenu();
+			
+			//if(false)
+		        while(running)
+		        {
+		        	enemyCount++;
+		        	if(enemyCount == 100)
+		        		createEnemy();
+		        	
+		            gameUpdate();	// Update the logical game state
+		            gameRender();	// Paint the screen into a buffer
+		            paintScreen();	// Active rendering - repaint
+		
+		            before = goToSleep(before);
+		        }
+		        
+	        //reboot game
+		}
     }
 
 	//=================== Go To Sleep ==============================
@@ -136,6 +156,20 @@ public class GamePanel extends JPanel implements Runnable
 	}
 	
 	
+	private void showMenu()
+	{
+		Graphics dbg;
+        
+        dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
+        dbg = dbImage.createGraphics();
+        
+        
+        //========= Draw background ==========
+        dbg.setColor(new Color(255, 255,255, 255 ));
+        dbg.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        
+		paintScreen();
+	}
 	
 	
 	//===================================================================================
@@ -242,8 +276,8 @@ public class GamePanel extends JPanel implements Runnable
         //========= Draw background ==========
         rManager.display(dbg);
         craft.draw(dbg); 
-		for(EnemyCraft enemy:enemies)
-			enemy.draw(dbg);
+		for(int i = 0 ; i < enemies.size() ; i++)
+			   enemies.get(i).draw(dbg);
 
         
 		//====== Check if game is over =======
