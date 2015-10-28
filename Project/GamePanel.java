@@ -1,6 +1,9 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -111,26 +114,33 @@ public class GamePanel extends JPanel implements Runnable
 		long before = System.currentTimeMillis();
 		running 	= true;
         
+		
+		
 		while(true)
 		{
-			//show menu
+			//Show menu
+			while (running)
+			{
+				renderMenu();
+				paintScreen();
+				before = goToSleep(before);
+				if(up)
+					break;
+			}
 			
-			
-			showMenu();
-			
-			//if(false)
-		        while(running)
-		        {
-		        	enemyCount++;
-		        	if(enemyCount == 100)
-		        		createEnemy();
-		        	
-		            gameUpdate();	// Update the logical game state
-		            gameRender();	// Paint the screen into a buffer
-		            paintScreen();	// Active rendering - repaint
-		
-		            before = goToSleep(before);
-		        }
+			//Play game
+	        while(running)
+	        {
+	        	enemyCount++;
+	        	if(enemyCount == 100)
+	        		createEnemy();
+	        	
+	            gameUpdate();	// Update the logical game state
+	            gameRender();	// Paint the screen into a buffer
+	            paintScreen();	// Active rendering - repaint
+	
+	            before = goToSleep(before);
+	        }
 		        
 	        //reboot game
 		}
@@ -156,19 +166,48 @@ public class GamePanel extends JPanel implements Runnable
 	}
 	
 	
-	private void showMenu()
+	//===================================================================================
+	//								Menu Screen
+	//===================================================================================
+	private void renderMenu()
 	{
+		int keyWidth = 50;
 		Graphics dbg;
-        
-        dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
+
+		dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
         dbg = dbImage.createGraphics();
-        
+        rManager.display(dbg);
         
         //========= Draw background ==========
-        dbg.setColor(new Color(255, 255,255, 255 ));
-        dbg.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        dbg.setColor(new Color(0, 0,0, 200 ));
+        dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         
-		paintScreen();
+        
+        //========= Draw Buttons =============
+        drawButtons(dbg);
+	}
+	
+	private void drawButtons(Graphics dbg)
+	{
+		Graphics2D g2 = (Graphics2D)dbg;
+		float thickness = 3;
+		int keyWidth = 200;
+		int keyHeight = 40;
+		
+		//Set button stroke
+		Stroke oldStroke = g2.getStroke();
+        g2.setStroke(new BasicStroke(thickness));
+        
+        dbg.setColor( Color.WHITE);
+        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-175, keyWidth,keyHeight );
+        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, keyWidth,keyHeight );
+        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  keyWidth,keyHeight );
+        
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-180+keyHeight, 40, "Hard",  Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50, 	(SCREEN_HEIGHT/2)-105+keyHeight, 40, "Medum", Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-30+keyHeight,  40, "Easy",  Color.WHITE);
+        
+        g2.setStroke(oldStroke);
 	}
 	
 	
@@ -246,7 +285,7 @@ public class GamePanel extends JPanel implements Runnable
 
 	public void createEnemy()
 	{
-		int enemy	 		= (new Random().nextInt(3) + 1);
+		int enemy	 		= (new Random().nextInt(3)  + 1);
 		int place	 		= (new Random().nextInt(10) + 1);
 		EnemyCraft newEnemy = null;
 		
@@ -254,7 +293,7 @@ public class GamePanel extends JPanel implements Runnable
 		{
 			case 1:	newEnemy = new EnemyA(SCREEN_WIDTH, SCREEN_HEIGHT/place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
 			case 2: newEnemy = new EnemyB(SCREEN_WIDTH, SCREEN_HEIGHT/place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
-			case 3: newEnemy = new EnemyC(SCREEN_WIDTH, SCREEN_HEIGHT-100,   SCREEN_WIDTH, SCREEN_HEIGHT);		break;
+			case 3: newEnemy = new EnemyC(SCREEN_WIDTH, SCREEN_HEIGHT - 100, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
 			default:break;
 		}
 		enemies.add(newEnemy);

@@ -110,7 +110,7 @@ public class Craft extends Sprite
     	
     	drawMissiles(g);
     	
-    	GameEngine.printText(g,50, 50, 25, "Score: " + score);
+    	GameEngine.printText(g,50, 50, 25, "Score: " + score, null);
     	
     	drawLifeBar(g);
     }
