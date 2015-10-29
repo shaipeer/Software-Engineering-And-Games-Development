@@ -114,13 +114,16 @@ public class GamePanel extends JPanel implements Runnable
 		long before = System.currentTimeMillis();
 		running 	= true;
         
-		
+		String fileName = "C:\\Users\\Rita\\workspace\\finalProj\\src\\background.wav";
+        (new SoundThread(fileName, AudioPlayer.LOOP)).start();
 		
 		while(true)
 		{
 			//Show menu
 			while (running)
 			{
+	         
+
 				renderMenu();
 				paintScreen();
 				before = goToSleep(before);
@@ -131,6 +134,7 @@ public class GamePanel extends JPanel implements Runnable
 			//Play game
 	        while(running)
 	        {
+	        	  
 	        	enemyCount++;
 	        	if(enemyCount == 100)
 	        		createEnemy();
@@ -254,6 +258,9 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void checkCollisions()
 	{
+		String fileName = "C:\\Users\\Rita\\workspace\\finalProj\\src\\Grenade Explosion.wav";
+        
+
 		try
 		{
 			EnemyCraft enemy;
@@ -265,7 +272,7 @@ public class GamePanel extends JPanel implements Runnable
 				if(craft.hit(enemy))
 				{
 					iter.remove();
-					
+					(new SoundThread(fileName, AudioPlayer.ONCE)).start();
 					if(craft.getLives() <= 0)
 						gameOver();
 					return;
@@ -273,6 +280,7 @@ public class GamePanel extends JPanel implements Runnable
 				
 				else if(craft.missileHit(enemy))
 				{
+					(new SoundThread(fileName, AudioPlayer.ONCE)).start();
 					enemy.hit();
 				}
 			}
