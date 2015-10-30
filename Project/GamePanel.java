@@ -321,7 +321,7 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void checkCollisions()
 	{
-		String fileName = "src/explosion.wav";///////////////////////////////////////////////////////
+		String fileName = "src/Grenade Explosion.wav";///////////////////////////////////////////////////////
 		
 		try
 		{
