@@ -34,7 +34,7 @@ public class Craft extends Sprite
 	private final int ACCELERATION_SPEED	= 2;	// The craft acceleration speed
 	
 	//========= Game Play ==================
-	private final int LIVES					= 3;	// The number of craft lives
+	private final int LIVES					= 1;	// The number of craft lives
 	private final int HIT_BONUS				= 10;	// The amount of score added by each missile hit
 	private final int MAX_MISSILES			= 0; 	// The maximum number of missiles on the screen, 0 is infinite
 

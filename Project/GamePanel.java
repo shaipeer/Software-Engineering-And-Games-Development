@@ -3,9 +3,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -49,9 +52,13 @@ public class GamePanel extends JPanel implements Runnable
 	//========= Game Status =============
 	private static int enemyCount;
 	private Boolean running;
+	private Boolean showMenu;
+	
 	private int difficulty;
 	private int level;
 	
+	private int mouseX, mouseY;
+	private Rectangle mouseRect;
 	private boolean isGameOver, isWin;
 	private boolean up, down, left, right;
 	private RibbonsManager rManager;
@@ -67,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable
 
 		//========== Key Listener ==========
 		addKeyListener(new Listener());
+		addMouseListener(new MouseLis());
 		up = left = right = false;
 		
 		difficulty = 1;
@@ -80,6 +88,7 @@ public class GamePanel extends JPanel implements Runnable
 	{
 		//========== Game Status ===========
 		running    	= true;
+		showMenu	= true;
 		isWin 		= false;
 		isGameOver 	= false;
 		enemyCount	= 0;
@@ -113,28 +122,28 @@ public class GamePanel extends JPanel implements Runnable
     {
 		long before = System.currentTimeMillis();
 		running 	= true;
-        
-		String fileName = "C:\\Users\\Rita\\workspace\\finalProj\\src\\background.wav";
+		
+		String fileName = "src/background.wav";////////////////////////////////////////////////////////////////////
         (new SoundThread(fileName, AudioPlayer.LOOP)).start();
 		
 		while(true)
 		{
 			//Show menu
-			while (running)
+			while (showMenu)
 			{
-	         
-
 				renderMenu();
 				paintScreen();
 				before = goToSleep(before);
 				if(up)
-					break;
+				{
+					showMenu = false;
+					running = true;
+				}
 			}
 			
 			//Play game
 	        while(running)
 	        {
-	        	  
 	        	enemyCount++;
 	        	if(enemyCount == 100)
 	        		createEnemy();
@@ -145,8 +154,16 @@ public class GamePanel extends JPanel implements Runnable
 	
 	            before = goToSleep(before);
 	        }
-		        
+		    
 	        //reboot game
+	        while (!showMenu)
+			{
+				//renderMenu();
+	        	renderReset();
+	        		
+	        	paintScreen();
+				before = goToSleep(before);
+			}
 		}
     }
 
@@ -175,7 +192,6 @@ public class GamePanel extends JPanel implements Runnable
 	//===================================================================================
 	private void renderMenu()
 	{
-		int keyWidth = 50;
 		Graphics dbg;
 
 		dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
@@ -193,12 +209,12 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void drawButtons(Graphics dbg)
 	{
-		Graphics2D g2 = (Graphics2D)dbg;
+		Graphics2D g2   = (Graphics2D)dbg;
 		float thickness = 3;
-		int keyWidth = 200;
-		int keyHeight = 40;
+		int keyWidth    = 200;
+		int keyHeight   = 40;
 		
-		//Set button stroke
+		//Set buttons stroke
 		Stroke oldStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(thickness));
         
@@ -213,6 +229,53 @@ public class GamePanel extends JPanel implements Runnable
         
         g2.setStroke(oldStroke);
 	}
+	
+	
+	//===================================================================================
+	//								Reset Screen
+	//===================================================================================
+	private void renderReset()
+	{
+		Graphics dbg;
+		int keyWidth    = 100;
+		int keyHeight   = 20;
+		
+		dbImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TRANSLUCENT);
+        dbg = dbImage.createGraphics();
+        rManager.display(dbg);
+        
+        //========= Draw background ==========
+        dbg.setColor(new Color(0, 0,0, 200 ));
+        dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        
+        
+        
+        //========= Draw Buttons =============
+        if (isGameOver)
+        	gameOverMessage(dbg);
+        else if (isWin)
+        	youWinMessage(dbg);
+        
+        //Draw buttons
+        dbg.setColor(Color.WHITE);
+        dbg.drawRect((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2)+50, keyWidth,keyHeight );
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)+20, (SCREEN_HEIGHT/2)+50+18, 20, "RESET", Color.WHITE);
+        
+        
+        if(down)
+        {
+        	isGameOver = false;
+        	isWin = false;
+        	showMenu = true;
+        	craft = new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH ,SCREEN_HEIGHT);
+        	enemies = new ArrayList<EnemyCraft>();
+        	
+        	
+        }
+	}
+	
+	
+	
 	
 	
 	//===================================================================================
@@ -258,9 +321,8 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void checkCollisions()
 	{
-		String fileName = "C:\\Users\\Rita\\workspace\\finalProj\\src\\Grenade Explosion.wav";
-        
-
+		String fileName = "src/explosion.wav";///////////////////////////////////////////////////////
+		
 		try
 		{
 			EnemyCraft enemy;
@@ -272,7 +334,9 @@ public class GamePanel extends JPanel implements Runnable
 				if(craft.hit(enemy))
 				{
 					iter.remove();
-					(new SoundThread(fileName, AudioPlayer.ONCE)).start();
+					
+					(new SoundThread(fileName, AudioPlayer.ONCE)).start();//////////////////////////////////////////////////////////////////////////
+					
 					if(craft.getLives() <= 0)
 						gameOver();
 					return;
@@ -280,8 +344,8 @@ public class GamePanel extends JPanel implements Runnable
 				
 				else if(craft.missileHit(enemy))
 				{
-					(new SoundThread(fileName, AudioPlayer.ONCE)).start();
 					enemy.hit();
+					(new SoundThread(fileName, AudioPlayer.ONCE)).start();//////////////////////////////////////////////////////////////////////////
 				}
 			}
 		}
@@ -333,7 +397,7 @@ public class GamePanel extends JPanel implements Runnable
             gameOverMessage(dbg);
             running = false;
         }
-        if(isWin)
+        else if(isWin)
         {
             youWinMessage(dbg);
             running = false;
@@ -365,48 +429,7 @@ public class GamePanel extends JPanel implements Runnable
         }
         
     }
-	
-	
-	
-	//===================================================================================
-	//								Listener
-	//===================================================================================
-	private class Listener extends KeyAdapter
-    {
-		//========= Game Constants ===========
-		public void keyPressed(KeyEvent e)
-		{
-			int keyCode = e.getKeyCode();
-			
-		    switch( keyCode ) 
-		    { 
-		        case KeyEvent.VK_UP:	 	up    = true;	break;
-		        case KeyEvent.VK_DOWN:	 	down  = true;	break;
-		        case KeyEvent.VK_LEFT:	 	left  = true;	break;
-		        case KeyEvent.VK_RIGHT : 	right = true;	break;
-		        default: 				 					return;
-		        
-		    }
-        }
-        
-      //========= Game Constants ===========
-		public void keyReleased(KeyEvent e)
-		{
-			int keyCode = e.getKeyCode();
-			
-		    switch( keyCode ) 
-		    { 
-			    case KeyEvent.VK_UP:	 	up    = false;		break;
-			    case KeyEvent.VK_DOWN:	 	down  = false;		break;
-		        case KeyEvent.VK_LEFT:	 	left  = false;		break;
-		        case KeyEvent.VK_RIGHT : 	right = false;		break;
-		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
-		        default: 				 						return;
-		    }		 
-		}
-    }
-	
-	
+
 	
 	//===================================================================================
 	//								Start Game
@@ -444,4 +467,67 @@ public class GamePanel extends JPanel implements Runnable
     
     private int getRandomLocationX()	{	return new Random().nextInt(SCREEN_WIDTH );	}
     private int getRandomLocationY()	{	return new Random().nextInt(SCREEN_HEIGHT);	}
+
+
+	
+	//===================================================================================
+	//								Mouse Listener
+	//===================================================================================
+	private class MouseLis extends MouseAdapter
+    {
+		@Override
+		public void mouseClicked(MouseEvent e) 
+		{
+			super.mouseClicked(e);
+			e.getX();
+			e.getY();
+			
+		}
+		
+    }
+	
+	
+	//===================================================================================
+	//								Key Listener
+	//===================================================================================
+	private class Listener extends KeyAdapter
+    {
+		//========= Game Constants ===========
+		public void keyPressed(KeyEvent e)
+		{
+			int keyCode = e.getKeyCode();
+			
+		    switch( keyCode ) 
+		    { 
+		        case KeyEvent.VK_UP:	 	up    = true;	break;
+		        case KeyEvent.VK_DOWN:	 	down  = true;	break;
+		        case KeyEvent.VK_LEFT:	 	left  = true;	break;
+		        case KeyEvent.VK_RIGHT : 	right = true;	break;
+		        default: 				 					return;
+		        
+		    }
+        }
+        
+      //========= Game Constants ===========
+		public void keyReleased(KeyEvent e)
+		{
+			int keyCode = e.getKeyCode();
+			
+		    switch( keyCode ) 
+		    { 
+			    case KeyEvent.VK_UP:	 	up    = false;		break;
+			    case KeyEvent.VK_DOWN:	 	down  = false;		break;
+		        case KeyEvent.VK_LEFT:	 	left  = false;		break;
+		        case KeyEvent.VK_RIGHT : 	right = false;		break;
+		        case KeyEvent.VK_SPACE: 	craft.fire();		break;
+		        default: 				 						return;
+		    }		 
+		}
+    }
+	
+	
 }
+
+
+
+
