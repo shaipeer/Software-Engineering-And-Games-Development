@@ -41,6 +41,9 @@ public class GamePanel extends JPanel implements Runnable
 	public final static  int SCREEN_HEIGHT  = 510; 
 	private static final int PERIOD 		= 60;
 	
+	private final int KEY_WIDTH    = 200;
+	private final int KEY_HEIGHT   = 40;
+	
 	//========= Game Paint ===========
 	private BufferedImage dbImage;
 	
@@ -58,8 +61,9 @@ public class GamePanel extends JPanel implements Runnable
 	private int level;
 	
 	private int mouseX, mouseY;
-	private Rectangle mouseRect;
-	private boolean isGameOver, isWin;
+	private Rectangle easyButton, mediumButton, hardButton, resetButton;  
+	
+	private boolean isGameOver, isWin, resetGame;
 	private boolean up, down, left, right;
 	private RibbonsManager rManager;
 	
@@ -81,6 +85,7 @@ public class GamePanel extends JPanel implements Runnable
 		level = 1;
 		
 		initialParameters();
+		initialButtons();
 	}
 
 	
@@ -91,6 +96,7 @@ public class GamePanel extends JPanel implements Runnable
 		showMenu	= true;
 		isWin 		= false;
 		isGameOver 	= false;
+		resetGame	= false;
 		enemyCount	= 0;
 		
 		//========== Game Craft ===========		
@@ -103,6 +109,14 @@ public class GamePanel extends JPanel implements Runnable
 		} catch (URISyntaxException e) {}
 	}
 	
+	
+	private void initialButtons()
+	{
+		hardButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-175, KEY_WIDTH,KEY_HEIGHT );
+		mediumButton = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, KEY_WIDTH,KEY_HEIGHT );
+		easyButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  KEY_WIDTH,KEY_HEIGHT );
+		resetButton  = new Rectangle((SCREEN_WIDTH/2),     (SCREEN_HEIGHT/2)+50,  KEY_WIDTH,KEY_HEIGHT );
+	}
 	//===================================================================================
 	//								Paint Component
 	//===================================================================================
@@ -134,14 +148,10 @@ public class GamePanel extends JPanel implements Runnable
 				renderMenu();
 				paintScreen();
 				before = goToSleep(before);
-				if(up)
-				{
-					showMenu = false;
-					running = true;
-				}
 			}
 			
 			//Play game
+			running = true;
 	        while(running)
 	        {
 	        	enemyCount++;
@@ -158,12 +168,12 @@ public class GamePanel extends JPanel implements Runnable
 	        //reboot game
 	        while (!showMenu)
 			{
-				//renderMenu();
 	        	renderReset();
 	        		
 	        	paintScreen();
 				before = goToSleep(before);
 			}
+	        resetGame = false;
 		}
     }
 
@@ -211,21 +221,20 @@ public class GamePanel extends JPanel implements Runnable
 	{
 		Graphics2D g2   = (Graphics2D)dbg;
 		float thickness = 3;
-		int keyWidth    = 200;
-		int keyHeight   = 40;
+		
 		
 		//Set buttons stroke
 		Stroke oldStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(thickness));
         
         dbg.setColor( Color.WHITE);
-        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-175, keyWidth,keyHeight );
-        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, keyWidth,keyHeight );
-        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  keyWidth,keyHeight );
+        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-175, KEY_WIDTH,KEY_HEIGHT );
+        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, KEY_WIDTH,KEY_HEIGHT );
+        dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  KEY_WIDTH,KEY_HEIGHT );
         
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-180+keyHeight, 40, "Hard",  Color.WHITE);
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50, 	(SCREEN_HEIGHT/2)-105+keyHeight, 40, "Medum", Color.WHITE);
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-30+keyHeight,  40, "Easy",  Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-180+KEY_HEIGHT, 40, "Hard",  Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50, 	(SCREEN_HEIGHT/2)-105+KEY_HEIGHT, 40, "Medum", Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-30+KEY_HEIGHT,  40, "Easy",  Color.WHITE);
         
         g2.setStroke(oldStroke);
 	}
@@ -262,7 +271,7 @@ public class GamePanel extends JPanel implements Runnable
         GameEngine.printText(dbg, (SCREEN_WIDTH/2)+20, (SCREEN_HEIGHT/2)+50+18, 20, "RESET", Color.WHITE);
         
         
-        if(down)
+        if(resetGame)
         {
         	isGameOver = false;
         	isWin = false;
@@ -479,9 +488,15 @@ public class GamePanel extends JPanel implements Runnable
 		public void mouseClicked(MouseEvent e) 
 		{
 			super.mouseClicked(e);
-			e.getX();
-			e.getY();
+			mouseX = e.getX();
+			mouseY = e.getY();
+			Rectangle mouseRect = new Rectangle(mouseX, mouseY, 1, 1);
 			
+			if      (hardButton.intersects(mouseRect))		{	difficulty = 3;		showMenu = false;	}
+			else if (mediumButton.intersects(mouseRect))	{	difficulty = 2;		showMenu = false;	}
+			else if (easyButton.intersects(mouseRect))		{	difficulty = 1;		showMenu = false;	}
+			else if (resetButton.intersects(mouseRect))		{	resetGame = true;}
+				
 		}
 		
     }
