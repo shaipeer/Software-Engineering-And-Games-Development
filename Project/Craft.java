@@ -87,7 +87,6 @@ public class Craft extends Sprite
     @Override
 	public void draw(Graphics g)
     {
-    	//g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
     	g.drawImage(bufImage, locX, locY, null);
     	
     	drawMissiles(g);

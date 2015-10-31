@@ -26,10 +26,11 @@ public class RibbonsManager {
 
         
         BufferedImage skyImg = null, skylineImg = null, lampsImg = null;
-        try {
-            skyImg = ImageIO.read(new File(getClass().getResource("/sky.png").toURI()));
-            skylineImg = ImageIO.read(new File(getClass().getResource("/skyline.png").toURI()));
-            lampsImg = ImageIO.read(new File(getClass().getResource("/ground.png").toURI()));
+        try 
+        {
+            skyImg 		= ImageIO.read(new File(getClass().getResource("/sky.png").toURI()));
+            skylineImg 	= ImageIO.read(new File(getClass().getResource("/skyline.png").toURI()));
+            lampsImg 	= ImageIO.read(new File(getClass().getResource("/ground.png").toURI()));
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -37,8 +38,6 @@ public class RibbonsManager {
         ribbons[1] = new Ribbon(pWidth, pHeight, skylineImg, 2);
         ribbons[2] = new Ribbon(pWidth, pHeight, lampsImg, 3);
         
-      //  for(Ribbon r : ribbons)
-      //  	r.moveLeft();
     }
 	
     public void display(Graphics g)

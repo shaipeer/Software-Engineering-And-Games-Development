@@ -39,7 +39,7 @@ public class Sprite
         locX = x;
         locY = y;
         dx = 5;
-		dy = 5;
+		dy = 4;
 		groundHeight = 25;
 		destroy = false;
         pWidth = w;
@@ -50,7 +50,7 @@ public class Sprite
         if(bufImage != null)
         {
             imageWidth  = bufImage.getWidth(null);
-            imageHeight = bufImage.getHeight(null);///////////////////////////////////////////////////////
+            imageHeight = bufImage.getHeight(null);
         }
     
     }

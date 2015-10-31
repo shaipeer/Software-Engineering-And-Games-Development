@@ -114,10 +114,10 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void initialButtons()
 	{
-		hardButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-175, KEY_WIDTH,KEY_HEIGHT );
-		mediumButton = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, KEY_WIDTH,KEY_HEIGHT );
-		easyButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  KEY_WIDTH,KEY_HEIGHT );
-		resetButton  = new Rectangle((SCREEN_WIDTH/2),     (SCREEN_HEIGHT/2)+50,  KEY_WIDTH,KEY_HEIGHT );
+		hardButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-175, KEY_WIDTH, KEY_HEIGHT );
+		mediumButton = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, KEY_WIDTH, KEY_HEIGHT );
+		easyButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  KEY_WIDTH, KEY_HEIGHT );
+		resetButton  = new Rectangle((SCREEN_WIDTH/2),     (SCREEN_HEIGHT/2)+50,  KEY_WIDTH, KEY_HEIGHT );
 	}
 
 	
@@ -153,7 +153,7 @@ public class GamePanel extends JPanel implements Runnable
 	        	if(craft.getScore() >= getNextLevelScore())
 	        		levelPass();
 	        	
-	        	if(level == WIN_LEVEL)
+	        	if(level == WIN_LEVEL+1)
 	        		youWin();
 	        	
 	            gameUpdate();	// Update the logical game state
@@ -248,6 +248,13 @@ public class GamePanel extends JPanel implements Runnable
         GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50, 	(SCREEN_HEIGHT/2)-105+KEY_HEIGHT, 40, "Medum", Color.WHITE);
         GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-30+KEY_HEIGHT,  40, "Easy",  Color.WHITE);
         
+        //========== Game Instructions ===================
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-120, (SCREEN_HEIGHT/2)+100,  20, "Instructions",  					Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-120, (SCREEN_HEIGHT/2)+102,  20, "__________",  						Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-120, (SCREEN_HEIGHT/2)+125,  20, "Use the arrow keys to navigate.",  Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-120, (SCREEN_HEIGHT/2)+145,  20, "Use the space bar to fire.",  		Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-120, (SCREEN_HEIGHT/2)+165,  20, "Get to Level 5 to win the game.",	Color.WHITE);
+           
         g2.setStroke(oldStroke);
 	}
 	
