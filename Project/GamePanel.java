@@ -37,9 +37,11 @@ public class GamePanel extends JPanel implements Runnable
 	//===================================================================================	
 	
 	//========= Game Constants ===========
-	public final static  int SCREEN_WIDTH   = 1000; 
-	public final static  int SCREEN_HEIGHT  = 510; 
-	private static final int PERIOD 		= 60;
+	public final static  int SCREEN_WIDTH   	= 1000; 
+	public final static  int SCREEN_HEIGHT  	= 510; 
+	private static final int PERIOD 			= 60;
+	private static final int LEVEL_PASS_SCORE 	= 200;
+	private static final int WIN_LEVEL			= 5;
 	
 	private final int KEY_WIDTH    = 200;
 	private final int KEY_HEIGHT   = 40;
@@ -117,17 +119,7 @@ public class GamePanel extends JPanel implements Runnable
 		easyButton   = new Rectangle((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  KEY_WIDTH,KEY_HEIGHT );
 		resetButton  = new Rectangle((SCREEN_WIDTH/2),     (SCREEN_HEIGHT/2)+50,  KEY_WIDTH,KEY_HEIGHT );
 	}
-	//===================================================================================
-	//								Paint Component
-	//===================================================================================
-//	public void paintComponent(Graphics g)
-//    {
-//        super.paintComponent(g);
-//        gameRender();
-//        g.drawImage(dbImage, 0, 0, this);
-//    }
-	
-	
+
 	
 	//===================================================================================
 	//									Run
@@ -142,7 +134,7 @@ public class GamePanel extends JPanel implements Runnable
 		
 		while(true)
 		{
-			//Show menu
+			//========== Show Menu ==========
 			while (showMenu)
 			{
 				renderMenu();
@@ -150,13 +142,19 @@ public class GamePanel extends JPanel implements Runnable
 				before = goToSleep(before);
 			}
 			
-			//Play game
+			//========== Play Game ==========
 			running = true;
 	        while(running)
 	        {
 	        	enemyCount++;
-	        	if(enemyCount == 100)
+	        	if(enemyCount >= (100/difficulty)-(level*difficulty))
 	        		createEnemy();
+	        	
+	        	if(craft.getScore() >= getNextLevelScore())
+	        		levelPass();
+	        	
+	        	if(level == WIN_LEVEL)
+	        		youWin();
 	        	
 	            gameUpdate();	// Update the logical game state
 	            gameRender();	// Paint the screen into a buffer
@@ -165,7 +163,7 @@ public class GamePanel extends JPanel implements Runnable
 	            before = goToSleep(before);
 	        }
 		    
-	        //reboot game
+	        //========== Reset Game ==========
 	        while (!showMenu)
 			{
 	        	renderReset();
@@ -196,6 +194,20 @@ public class GamePanel extends JPanel implements Runnable
         return System.currentTimeMillis();
 	}
 	
+	//=================== Level Pass ==============================
+	private void levelPass()
+	{
+		craft.resetCraftLocation();
+		
+		enemies = new ArrayList<EnemyCraft>();
+		
+		level++;
+	}
+	
+	private int getNextLevelScore()
+	{
+		return	level * level * LEVEL_PASS_SCORE;
+	}
 	
 	//===================================================================================
 	//								Menu Screen
@@ -273,12 +285,12 @@ public class GamePanel extends JPanel implements Runnable
         
         if(resetGame)
         {
-        	isGameOver = false;
-        	isWin = false;
-        	showMenu = true;
-        	craft = new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH ,SCREEN_HEIGHT);
-        	enemies = new ArrayList<EnemyCraft>();
-        	
+        	isGameOver  = false;
+        	isWin 	 	= false;
+        	showMenu	= true;
+        	craft		= new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH ,SCREEN_HEIGHT);
+        	enemies		= new ArrayList<EnemyCraft>();
+        	level		= 1;
         	
         }
 	}
@@ -303,11 +315,14 @@ public class GamePanel extends JPanel implements Runnable
 		if(left)	craft.moveLeft();
 		if(right) 	craft.moveRight();
 		
+		//========= Update Background ==========
 		rManager.update();
+		
+		//========= Update Craft ==========
 		craft.move();
 		
 		
-		
+		//========= Update Enemies ==========
 		try
 		{
 			for(EnemyCraft enemy : enemies)
@@ -330,7 +345,7 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void checkCollisions()
 	{
-		String fileName = "src/Grenade Explosion.wav";///////////////////////////////////////////////////////
+		String fileName = "src/explosion.wav";///////////////////////////////////////////////////////
 		
 		try
 		{
@@ -360,7 +375,6 @@ public class GamePanel extends JPanel implements Runnable
 		}
 		catch (Exception e)
 		{}
-		
 	}
 	
 
@@ -393,14 +407,18 @@ public class GamePanel extends JPanel implements Runnable
         dbg = dbImage.createGraphics();
         
         
-        //========= Draw background ==========
+        //========= Draw Background ==========
         rManager.display(dbg);
+        
+        //========= Draw Screen Objects ==========
         craft.draw(dbg); 
 		for(int i = 0 ; i < enemies.size() ; i++)
 			   enemies.get(i).draw(dbg);
-
-        
-		//====== Check if game is over =======
+		
+		//========= Draw Level  ==========
+        GameEngine.printText(dbg, SCREEN_WIDTH - 150, 50, 25, "Level: " + level, null);
+		
+		//====== Check Game Status =======
         if(isGameOver)
         {
             gameOverMessage(dbg);

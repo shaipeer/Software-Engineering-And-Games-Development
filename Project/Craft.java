@@ -28,20 +28,12 @@ public class Craft extends Sprite
 	private final static int C_WIDTH 		= 50;	//The craft width in pixels
 	private final static int C_HEIGHT 		= 25;	//The craft height in pixels
 	
-	//========= Craft Movement =============
-	private final int TOP_SPEED      		= 10;	// The craft top speed
-	private final int MOVE_DELAY			= 5;	// The craft movement delay, lower is faster
-	private final int ACCELERATION_SPEED	= 2;	// The craft acceleration speed
-	
 	//========= Game Play ==================
-	private final int LIVES					= 1;	// The number of craft lives
+	private final int LIVES					= 6;	// The number of craft lives
 	private final int HIT_BONUS				= 10;	// The amount of score added by each missile hit
-	private final int MAX_MISSILES			= 0; 	// The maximum number of missiles on the screen, 0 is infinite
 
 	//========= Craft Parameters ===========
 	private int score;
-	private int delay;
-	private double velocity;
 	private ArrayList<Missile> missileList;
 
 	
@@ -52,8 +44,6 @@ public class Craft extends Sprite
 	{
 		super(x, y, w, h, GameEngine.toBufferedImage(craftImage, C_WIDTH, C_HEIGHT));
 		 
-		velocity = 0;
-		delay = 0;
 		score = 0;
 		lives = LIVES;
 		
@@ -70,14 +60,6 @@ public class Craft extends Sprite
 		if(lives >= LIVES)
 			destroy = true;
 		
-		if(delay++ >= MOVE_DELAY)
-		{
-			//velocity -= FRICTION * velocity;
-			delay = 0;
-		
-			//locX += dx;
-			//locY += dy;
-		}
 		moveMissiles();
 	}
 	
@@ -167,49 +149,25 @@ public class Craft extends Sprite
 	//===================================================================================
 	//								Movement
 	//===================================================================================
-	
-	public void accelerat()
-	{
-		if (velocity <= TOP_SPEED)
-			velocity += ACCELERATION_SPEED;
-	}
-	public void moveUp()
-	{
-		if (locY > 0)
-			locY -= dy;
-	}
-	
-	public void moveDown()
-	{
-		if (locY < pHeight - groundHeight - 65)
-			locY += dy;
-	}
-	public void moveLeft()
-	{
-		if (locX > 0)
-			locX -= dx;
-	}
-	public void moveRight()
-	{
-		if (locX < pWidth - 65)
-			locX += dx;
-	}
-	
-	
+
 	public void fire()
 	{
-		if( (missileList.size() < MAX_MISSILES) || (MAX_MISSILES == 0) )
-			 missileList.add( new Missile(locX+20, locY+15, pWidth, pHeight) );
+		missileList.add( new Missile(locX+20, locY+15, pWidth, pHeight) );
 	}
+	
+	public void moveUp()	{	if (locY > 0)								locY -= dy;	}
+	public void moveDown()	{	if (locY < pHeight - groundHeight - 65)		locY += dy;	}
+	public void moveLeft()	{	if (locX > 0)								locX -= dx;	}
+	public void moveRight()	{	if (locX < pWidth - 65)						locX += dx;	}
 	
 	
 	
 	//===================================================================================
-	//								Getters
+	//								Getters / Setters
 	//===================================================================================
 	public int getScore()					{	return score;		}
 	public BufferedImage getCraftImage()	{	return bufImage;	}
-	
+	public void resetCraftLocation()		{	}
 	
 	//===================================================================================
 	//								To String

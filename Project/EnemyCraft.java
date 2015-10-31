@@ -20,9 +20,6 @@ public class EnemyCraft extends Sprite
 	//						Initial Constant And Static Values
 	//===================================================================================	
 	
-	//========= Craft Movement =============
-//	private final int MOVE_DELAY			= 5;	// The craft movement delay, lower is faster
-	
 	//========= Craft Parameters ===========
 	protected final int HIT_BONUS   = 5;
 	
