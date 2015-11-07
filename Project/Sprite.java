@@ -25,7 +25,7 @@ public class Sprite
     protected int imageWidth, imageHeight; 	// Image dimensions  
     protected int locX, locY, dx, dy;		// Sprite location
     protected int pWidth, pHeight;  		// Panel's dimensions
-    protected int groundHeight;				// 
+    protected int groundHeight;				// Game ground height
     protected int lives;					// Sprite number of lives
     protected boolean destroy;				// Is Sprite destroyed or not
     protected boolean atUpperWall, atButtonWall, atLeftWall, atRightWall;

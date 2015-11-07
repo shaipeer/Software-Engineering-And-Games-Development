@@ -30,13 +30,6 @@ public class Explosion extends Sprite
 		
 		Image icon = new ImageIcon(GameEngine.loadImage("src/enemy3.png")).getImage();	
 		g.drawImage(icon, 20, 20, null);
-		
-		/*explosionCounter++;
-		if(explosionCounter < EXPLOSION_DELAY)
-			g.drawImage(bufImage, locX + (imageWidth/2), locY + (imageHeight/2), null);
-		else
-			destroy = true;
-			*/
     }
 	
 }

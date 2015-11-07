@@ -166,7 +166,7 @@ public class Craft extends Sprite
 	//===================================================================================
 	public int getScore()					{	return score;		}
 	public BufferedImage getCraftImage()	{	return bufImage;	}
-	public void resetCraftLocation()		{	}
+	public void resetCraftLocation()		{	locX = pWidth/2; locY = pHeight/2;}
 	
 	//===================================================================================
 	//								To String

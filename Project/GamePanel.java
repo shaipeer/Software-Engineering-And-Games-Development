@@ -52,7 +52,6 @@ public class GamePanel extends JPanel implements Runnable
 	//========= Game Objects ===========
 	private Craft craft;
 	private ArrayList<EnemyCraft> enemies;
-	private ArrayList<Explosion> explosions;
 	
 	//========= Game Status =============
 	private static int enemyCount;
@@ -104,7 +103,6 @@ public class GamePanel extends JPanel implements Runnable
 		//========== Game Craft ===========		
 		craft 		= new Craft(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
 		enemies 	= new ArrayList<EnemyCraft>();
-		explosions 	= new ArrayList<Explosion>();
 			
 		try {
 			rManager = new RibbonsManager(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -244,9 +242,9 @@ public class GamePanel extends JPanel implements Runnable
         dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-100, KEY_WIDTH,KEY_HEIGHT );
         dbg.drawRect((SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2)-25,  KEY_WIDTH,KEY_HEIGHT );
         
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-180+KEY_HEIGHT, 40, "Hard",  Color.WHITE);
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50, 	(SCREEN_HEIGHT/2)-105+KEY_HEIGHT, 40, "Medum", Color.WHITE);
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50+10, (SCREEN_HEIGHT/2)-30+KEY_HEIGHT,  40, "Easy",  Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 60, (SCREEN_HEIGHT/2)-180+KEY_HEIGHT, 40, "Hard",  Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 50, (SCREEN_HEIGHT/2)-105+KEY_HEIGHT, 40, "Medum", Color.WHITE);
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)-100 + 60, (SCREEN_HEIGHT/2)-30 +KEY_HEIGHT, 40, "Easy",  Color.WHITE);
         
         //========== Game Instructions ===================
         GameEngine.printText(dbg, (SCREEN_WIDTH/2)-120, (SCREEN_HEIGHT/2)+100,  20, "Instructions",  					Color.WHITE);
@@ -275,9 +273,7 @@ public class GamePanel extends JPanel implements Runnable
         //========= Draw background ==========
         dbg.setColor(new Color(0, 0,0, 200 ));
         dbg.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        
-        
-        
+ 
         //========= Draw Buttons =============
         if (isGameOver)
         	gameOverMessage(dbg);
@@ -286,8 +282,8 @@ public class GamePanel extends JPanel implements Runnable
         
         //Draw buttons
         dbg.setColor(Color.WHITE);
-        dbg.drawRect((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2)+50, keyWidth,keyHeight );
-        GameEngine.printText(dbg, (SCREEN_WIDTH/2)+20, (SCREEN_HEIGHT/2)+50+18, 20, "RESET", Color.WHITE);
+        dbg.drawRect((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2)+50, keyWidth, keyHeight );
+        GameEngine.printText(dbg, (SCREEN_WIDTH/2)+20, (SCREEN_HEIGHT/2)+68, 20, "RESET", Color.WHITE);
         
         
         if(resetGame)
@@ -310,8 +306,7 @@ public class GamePanel extends JPanel implements Runnable
 	//								Game Loop
 	//===================================================================================
 	
-	
-	
+
 	//-----------------------------------------------------------------------------------
 	//								Game Update
 	//-----------------------------------------------------------------------------------
@@ -327,7 +322,6 @@ public class GamePanel extends JPanel implements Runnable
 		
 		//========= Update Craft ==========
 		craft.move();
-		
 		
 		//========= Update Enemies ==========
 		try
@@ -352,7 +346,7 @@ public class GamePanel extends JPanel implements Runnable
 	
 	private void checkCollisions()
 	{
-		String fileName = "src/explosion.wav";///////////////////////////////////////////////////////
+		String fileName = "src/explosion.wav";
 		
 		try
 		{
@@ -366,7 +360,7 @@ public class GamePanel extends JPanel implements Runnable
 				{
 					iter.remove();
 					
-					(new SoundThread(fileName, AudioPlayer.ONCE)).start();//////////////////////////////////////////////////////////////////////////
+					(new SoundThread(fileName, AudioPlayer.ONCE)).start();
 					
 					if(craft.getLives() <= 0)
 						gameOver();
@@ -388,13 +382,13 @@ public class GamePanel extends JPanel implements Runnable
 	public void createEnemy()
 	{
 		int enemy	 		= (new Random().nextInt(3)  + 1);
-		int place	 		= (new Random().nextInt(10) + 1);
+		int place	 		= (new Random().nextInt(SCREEN_HEIGHT-150) + 150);
 		EnemyCraft newEnemy = null;
 		
 		switch(enemy)
 		{
-			case 1:	newEnemy = new EnemyA(SCREEN_WIDTH, SCREEN_HEIGHT/place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
-			case 2: newEnemy = new EnemyB(SCREEN_WIDTH, SCREEN_HEIGHT/place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
+			case 1:	newEnemy = new EnemyA(SCREEN_WIDTH, SCREEN_HEIGHT-place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
+			case 2: newEnemy = new EnemyB(SCREEN_WIDTH, SCREEN_HEIGHT-place, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
 			case 3: newEnemy = new EnemyC(SCREEN_WIDTH, SCREEN_HEIGHT - 100, SCREEN_WIDTH, SCREEN_HEIGHT);		break;
 			default:break;
 		}
@@ -495,15 +489,10 @@ public class GamePanel extends JPanel implements Runnable
     {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
         g.setColor(Color.WHITE);
-        g.drawString("You Win", SCREEN_WIDTH/2 - 30, SCREEN_HEIGHT/2);
+        g.drawString("You Win", (SCREEN_WIDTH/2) - 30, SCREEN_HEIGHT/2);
     }
     
-    
-    private int getRandomLocationX()	{	return new Random().nextInt(SCREEN_WIDTH );	}
-    private int getRandomLocationY()	{	return new Random().nextInt(SCREEN_HEIGHT);	}
 
-
-	
 	//===================================================================================
 	//								Mouse Listener
 	//===================================================================================
@@ -520,10 +509,8 @@ public class GamePanel extends JPanel implements Runnable
 			if      (hardButton.intersects(mouseRect))		{	difficulty = 3;		showMenu = false;	}
 			else if (mediumButton.intersects(mouseRect))	{	difficulty = 2;		showMenu = false;	}
 			else if (easyButton.intersects(mouseRect))		{	difficulty = 1;		showMenu = false;	}
-			else if (resetButton.intersects(mouseRect))		{	resetGame = true;}
-				
+			else if (resetButton.intersects(mouseRect))		{	resetGame = true;}	
 		}
-		
     }
 	
 	
