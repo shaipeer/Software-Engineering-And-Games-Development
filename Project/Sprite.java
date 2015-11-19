@@ -1,19 +1,19 @@
+/**
+	|===========================================================|
+	|	  	Exercise #  :	 project							|
+	|															|
+	|   	File name   :	 Sprite.java						|
+	|		Date		:	 28/08/2015    	      				|
+	|		Author 1   	:	 Shai Pe'er 	(032571580)			|
+	|		Author 2   	:	 Denys Bedilov 	(327011813)			|
+	|		Author 3   	:	 Rita Markovich	(304492291)			|
+	|===========================================================|
+ */
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 
-/**
-|===========================================================|
-|	  	Exercise #  :	 3									|
-|															|
-|   	File name   :	 Sprite.java						|
-|		Date		:	 28/08/2015    	      				|
-|		Author    	:	 Shai Pe'er 	(032571580)			|
-|===========================================================|
-*/
 
 
 public class Sprite 

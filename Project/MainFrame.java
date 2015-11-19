@@ -1,14 +1,17 @@
-import javax.swing.JFrame;
-
 /**
 	|===========================================================|
-	|	  	Exercise #  :	 2									|
+	|	  	Exercise #  :	 project							|
 	|															|
 	|   	File name   :	 MainFrame.java						|
 	|		Date		:	 28/08/2015    	      				|
-	|		Author    	:	 Shai Pe'er 	(032571580)			|
+	|		Author 1   	:	 Shai Pe'er 	(032571580)			|
+	|		Author 2   	:	 Denys Bedilov 	(327011813)			|
+	|		Author 3   	:	 Rita Markovich	(304492291)			|
 	|===========================================================|
-*/
+ */
+
+import javax.swing.JFrame;
+
 
 public class MainFrame 
 {
